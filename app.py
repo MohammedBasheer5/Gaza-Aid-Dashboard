@@ -328,7 +328,7 @@ section[data-testid="stSidebar"] .stFileUploader {{
   box-shadow: none !important;
 }}
 
-/* Tab list / nav bar — dark pill with blur */
+/* Tab list / nav bar — dark pill with blur, shrinks to content */
 [data-testid="stTabs"] [role="tablist"] {{
   background: rgba(3, 10, 26, 0.88) !important;
   border-radius: 14px !important;
@@ -340,6 +340,10 @@ section[data-testid="stSidebar"] .stFileUploader {{
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
   margin-bottom: 12px !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  display: flex !important;
+  overflow: visible !important;
 }}
 
 /* Each tab button — default (not selected) */
