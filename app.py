@@ -65,7 +65,7 @@ def inject_global_theme(bg_path: str):
    GLOBAL TYPOGRAPHY (تكبير النص)
 ========================= */
 html, body, [class*="css"] {{
-  font-size: 30px !important;          /* 👈 كبرنا الخط العام */
+  font-size: 15px !important;          /* 👈 كبرنا الخط العام */
 }}
 
 p, li, span, div {{
@@ -1040,6 +1040,7 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
 
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
 
 
 
