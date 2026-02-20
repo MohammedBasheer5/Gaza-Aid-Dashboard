@@ -116,12 +116,47 @@ section[data-testid="stSidebar"] textarea::placeholder {{
 }}
 
 section[data-testid="stSidebar"] [data-baseweb="input"],
-section[data-testid="stSidebar"] [data-baseweb="select"],
-section[data-testid="stSidebar"] .stFileUploader {{
+section[data-testid="stSidebar"] [data-baseweb="select"] {{
   background: #FFFFFF !important;
   border-radius: 12px;
   padding: 6px 8px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+}}
+
+/* File uploader — white card, dark readable text */
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] {{
+  background: #FFFFFF !important;
+  border-radius: 12px !important;
+  padding: 10px !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15) !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] label,
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] label p,
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] label span {{
+  color: #0B1F3A !important;
+  -webkit-text-fill-color: #0B1F3A !important;
+  font-weight: 700 !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {{
+  background: #EEF4FF !important;
+  border: 1.5px dashed #3B8ED6 !important;
+  border-radius: 10px !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] * {{
+  color: #0B1F3A !important;
+  -webkit-text-fill-color: #0B1F3A !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] small {{
+  color: #4A6080 !important;
+  -webkit-text-fill-color: #4A6080 !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {{
+  background: #FFFFFF !important;
+  color: #0B1F3A !important;
+  -webkit-text-fill-color: #0B1F3A !important;
+  border: 1px solid #3B8ED6 !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
 }}
 
 section[data-testid="stSidebar"] [data-baseweb="tag"] {{
@@ -527,7 +562,6 @@ def hw_forecast(series: pd.Series, periods: int, freq: str) -> pd.Series:
 # =========================
 st.markdown('''
 <div class="hero-wrapper">
-  <div class="hero-icon">📊</div>
   <h1 class="pro-title">Gaza Aid Intelligence</h1>
   <h3 class="pro-sub">Real-Time Monitoring &amp; Predictive Analytics</h3>
   <div class="pro-divider-line"></div>
