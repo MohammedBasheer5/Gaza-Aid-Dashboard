@@ -44,34 +44,42 @@ def inject_global_theme(bg_path: str):
     st.markdown(
         f"""
 <style>
-/* ===== Force background on modern Streamlit containers ===== */
+/* =========================
+   GLOBAL BACKGROUND (استخدم طريقة واحدة فقط)
+========================= */
 [data-testid="stAppViewContainer"] {{
   background:
-    linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.62)),
+    linear-gradient(rgba(0,0,0,0.58), rgba(0,0,0,0.58)),
     url("data:image/jpg;base64,{bg64}");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }}
-
 .stApp {{
   background: transparent !important;
 }}
-
-/* Remove default header background to see image */
 [data-testid="stHeader"] {{
   background: rgba(0,0,0,0) !important;
 }}
-
-/* Container spacing */
 .block-container {{
   padding-top: 1.2rem;
+}}
+
+/* =========================
+   GLOBAL TYPOGRAPHY (تكبير عام)
+========================= */
+html, body, [class*="css"] {{
+  font-size: 17px !important;
+}}
+p, li, span, div {{
+  font-size: 18px !important;
+  line-height: 1.75 !important;
 }}
 
 /* ====== Make ALL markdown headers readable (global) ====== */
 h1, h2, h3, h4, h5, h6 {{
   color: #FFFFFF !important;
-  text-shadow: 0 2px 0 rgba(0,0,0,.55), 0 10px 24px rgba(0,0,0,.55);
+  text-shadow: 0 2px 0 rgba(0,0,0,.60), 0 10px 24px rgba(0,0,0,.60);
 }}
 
 /* ====== Header glass box ====== */
@@ -79,37 +87,37 @@ h1, h2, h3, h4, h5, h6 {{
   width: fit-content;
   max-width: 95%;
   margin: 0 auto 14px auto;
-  padding: 16px 20px;
+  padding: 18px 22px;
   border-radius: 18px;
-  background: rgba(0,0,0,0.30);
-  border: 1px solid rgba(255,255,255,0.14);
-  backdrop-filter: blur(7px);
+  background: rgba(0,0,0,0.38);
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
 }}
-
 .hero .title {{
-  font-size: 54px;
+  font-size: 58px;
   font-weight: 1000;
   margin: 0 0 6px 0;
 }}
-
 .hero .sub {{
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 900;
   margin: 0 0 6px 0;
   color: #D7F0FF !important;
 }}
-
 .hero .sub2 {{
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
   margin: 0;
   color: #7DD3FF !important;
 }}
 
-/* ===== Sidebar stays dark ===== */
+/* =========================
+   SIDEBAR
+========================= */
 section[data-testid="stSidebar"] {{
   background: linear-gradient(180deg, #06152b 0%, #061b38 100%);
-  border-right: 1px solid rgba(255,255,255,0.08);
+  border-right: 1px solid rgba(255,255,255,0.10);
 }}
 section[data-testid="stSidebar"] * {{
   color: #EAF2FF !important;
@@ -124,6 +132,8 @@ section[data-testid="stSidebar"] [role="combobox"],
 section[data-testid="stSidebar"] [role="spinbutton"] {{
   color: #0B1F3A !important;
   -webkit-text-fill-color: #0B1F3A !important;
+  font-weight: 900 !important;
+  font-size: 16px !important;
 }}
 
 /* ===== Multiselect tags: make text readable ===== */
@@ -133,12 +143,58 @@ section[data-testid="stSidebar"] [data-baseweb="tag"] {{
 }}
 section[data-testid="stSidebar"] [data-baseweb="tag"] span {{
   color: #ffffff !important;
-  font-weight: 900 !important;
+  font-weight: 1000 !important;
+  font-size: 14px !important;
 }}
 section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
   color: #ffffff !important;
   fill: #ffffff !important;
   opacity: 0.95 !important;
+}}
+
+/* =========================
+   TABS (واضحة قبل الضغط + أحمر عند التحديد)
+========================= */
+div[data-baseweb="tab-list"] {{
+  gap: 10px !important;
+  background: rgba(0,0,0,0.35) !important;
+  border: 1px solid rgba(255,255,255,0.14) !important;
+  border-radius: 14px !important;
+  padding: 8px 10px !important;
+  backdrop-filter: blur(8px) !important;
+}}
+
+button[data-baseweb="tab"] {{
+  color: rgba(255,255,255,0.92) !important;
+  font-weight: 1000 !important;
+  font-size: 18px !important;
+  padding: 10px 14px !important;
+  border-radius: 12px !important;
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  transition: all .15s ease-in-out !important;
+}}
+
+button[data-baseweb="tab"]:hover {{
+  background: rgba(255,255,255,0.14) !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  transform: translateY(-1px);
+}}
+
+button[data-baseweb="tab"][aria-selected="true"] {{
+  background: rgba(255, 59, 59, 0.18) !important;
+  border: 1px solid rgba(255, 59, 59, 0.55) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 10px 26px rgba(255,59,59,0.18) !important;
+}}
+
+div[data-baseweb="tab-highlight"] {{
+  background: #ff3b3b !important;
+  height: 4px !important;
+  border-radius: 999px !important;
+}}
+div[data-baseweb="tab-border"] {{
+  display: none !important;
 }}
 </style>
 """,
@@ -169,6 +225,7 @@ def set_background(image_file):
                 background-position: center;
                 background-attachment: fixed;
             }}
+            
             </style>
             """,
             unsafe_allow_html=True
@@ -945,6 +1002,7 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
 
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
 
 
 
