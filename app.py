@@ -6,22 +6,11 @@ from statsmodels.tsa.holtwinters import ExponentialSmoothing
 import base64
 from pathlib import Path
 
-# =========================================================
-# Gaza Aid Intelligence — Pro Dashboard (FULL)
-# - Pro theme + Gaza background image (gaza_bg.jpg)
-# - Fix sidebar widget text (white boxes) + multiselect tag readability
-# - Filters: Metric, Aggregation, Required, Forecast Horizon
-# - Filters: Cargo Categories + Crossings + Date Range
-# - KPI Cards + Tabs
-# - Forecast: Holt-Winters with robust fallback
-# - NEW: Gaza Map Heatmap (by crossings) + table
-# =========================================================
-
 # =========================
 # CONFIG
 # =========================
 DEFAULT_FILE_PATH = "commodities-received-13.xlsx"
-BG_IMAGE_PATH = "gaza_bg.jpg"  # ضع الصورة بنفس مجلد app.py
+BG_IMAGE_PATH = "gaza_bg.jpg"
 
 st.set_page_config(
     page_title="Gaza Aid Intelligence",
@@ -29,160 +18,11 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-import base64
-from pathlib import Path
-import streamlit as st
-
-BG_IMAGE_PATH = "gaza_bg.jpg"  # نفس المجلد مع app.py
-
-def inject_global_theme(bg_path: str):
-    p = Path(bg_path)
-    bg64 = ""
-    if p.exists():
-        bg64 = base64.b64encode(p.read_bytes()).decode("utf-8")
-
-    st.markdown(
-        f"""
-<style>
-/* ===== Force background on modern Streamlit containers ===== */
-[data-testid="stAppViewContainer"] {{
-  background:
-    linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.62)),
-    url("data:image/jpg;base64,{bg64}");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}}
-
-.stApp {{
-  background: transparent !important;
-}}
-
-/* Remove default header background to see image */
-[data-testid="stHeader"] {{
-  background: rgba(0,0,0,0) !important;
-}}
-
-/* Container spacing */
-.block-container {{
-  padding-top: 1.2rem;
-}}
-
-/* ====== Make ALL markdown headers readable (global) ====== */
-h1, h2, h3, h4, h5, h6 {{
-  color: #FFFFFF !important;
-  text-shadow: 0 2px 0 rgba(0,0,0,.55), 0 10px 24px rgba(0,0,0,.55);
-}}
-
-/* ====== Header glass box ====== */
-.hero {{
-  width: fit-content;
-  max-width: 95%;
-  margin: 0 auto 14px auto;
-  padding: 16px 20px;
-  border-radius: 18px;
-  background: rgba(0,0,0,0.30);
-  border: 1px solid rgba(255,255,255,0.14);
-  backdrop-filter: blur(7px);
-}}
-
-.hero .title {{
-  font-size: 54px;
-  font-weight: 1000;
-  margin: 0 0 6px 0;
-}}
-
-.hero .sub {{
-  font-size: 24px;
-  font-weight: 900;
-  margin: 0 0 6px 0;
-  color: #D7F0FF !important;
-}}
-
-.hero .sub2 {{
-  font-size: 20px;
-  font-weight: 900;
-  margin: 0;
-  color: #7DD3FF !important;
-}}
-
-/* ===== Sidebar stays dark ===== */
-section[data-testid="stSidebar"] {{
-  background: linear-gradient(180deg, #06152b 0%, #061b38 100%);
-  border-right: 1px solid rgba(255,255,255,0.08);
-}}
-section[data-testid="stSidebar"] * {{
-  color: #EAF2FF !important;
-}}
-
-/* ===== Fix white widgets text inside sidebar ===== */
-section[data-testid="stSidebar"] input,
-section[data-testid="stSidebar"] textarea,
-section[data-testid="stSidebar"] [data-baseweb="input"] input,
-section[data-testid="stSidebar"] [data-baseweb="select"] input,
-section[data-testid="stSidebar"] [role="combobox"],
-section[data-testid="stSidebar"] [role="spinbutton"] {{
-  color: #0B1F3A !important;
-  -webkit-text-fill-color: #0B1F3A !important;
-}}
-
-/* ===== Multiselect tags: make text readable ===== */
-section[data-testid="stSidebar"] [data-baseweb="tag"] {{
-  background: #ff3b3b !important;
-  border: 1px solid rgba(255,255,255,0.25) !important;
-}}
-section[data-testid="stSidebar"] [data-baseweb="tag"] span {{
-  color: #ffffff !important;
-  font-weight: 900 !important;
-}}
-section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
-  color: #ffffff !important;
-  fill: #ffffff !important;
-  opacity: 0.95 !important;
-}}
-</style>
-""",
-        unsafe_allow_html=True,
-    )
-
-inject_global_theme(BG_IMAGE_PATH)
-
-
-
-import base64
-from pathlib import Path
-
-def set_background(image_file):
-    img_path = Path(image_file)
-
-    if img_path.exists():
-        with open(img_path, "rb") as f:
-            encoded = base64.b64encode(f.read()).decode()
-
-        st.markdown(
-            f"""
-            <style>
-            .stApp {{
-                background: linear-gradient(rgba(7,27,51,0.65), rgba(7,27,51,0.65)),
-                            url("data:image/jpg;base64,{encoded}");
-                background-size: cover;
-                background-position: center;
-                background-attachment: fixed;
-            }}
-            
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-    else:
-        st.warning("Background image not found.")
-
-set_background("gaza_bg.jpg")
 
 # =========================
-# THEME / CSS (PRO + BACKGROUND + FIX TAGS)
+# THEME / CSS
 # =========================
-def _img_to_base64(path: str) -> str | None:
+def _img_to_base64(path: str):
     p = Path(path)
     if not p.exists():
         return None
@@ -193,7 +33,14 @@ bg_b64 = _img_to_base64(BG_IMAGE_PATH)
 bg_css = ""
 if bg_b64:
     bg_css = f"""
-/* ====== Main background with Gaza image ====== */
+[data-testid="stAppViewContainer"] {{
+  background:
+    linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.62)),
+    url("data:image/jpg;base64,{bg_b64}");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}}
 .main {{
   background:
     linear-gradient(rgba(6, 20, 43, 0.70), rgba(6, 20, 43, 0.70)),
@@ -221,6 +68,23 @@ st.markdown(
 
 {bg_css}
 
+.stApp {{
+  background: transparent !important;
+}}
+
+[data-testid="stHeader"] {{
+  background: rgba(0,0,0,0) !important;
+}}
+
+.block-container {{
+  padding-top: 1.2rem;
+}}
+
+h1, h2, h3, h4, h5, h6 {{
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 0 rgba(0,0,0,.55), 0 10px 24px rgba(0,0,0,.55);
+}}
+
 /* ====== Sidebar ====== */
 section[data-testid="stSidebar"] {{
   background: linear-gradient(180deg, #06152b 0%, #061b38 100%);
@@ -233,7 +97,6 @@ section[data-testid="stSidebar"] a {{
   color: #BFE3FF !important;
 }}
 
-/* ✅ Fix: readable text INSIDE white widgets in sidebar */
 section[data-testid="stSidebar"] input,
 section[data-testid="stSidebar"] textarea,
 section[data-testid="stSidebar"] select,
@@ -242,18 +105,16 @@ section[data-testid="stSidebar"] [data-baseweb="select"] input,
 section[data-testid="stSidebar"] [data-baseweb="select"] div,
 section[data-testid="stSidebar"] [role="combobox"],
 section[data-testid="stSidebar"] [role="spinbutton"] {{
-  color: var(--ink) !important;
-  -webkit-text-fill-color: var(--ink) !important;
+  color: #0B1F3A !important;
+  -webkit-text-fill-color: #0B1F3A !important;
 }}
 
-/* Placeholder in sidebar widgets */
 section[data-testid="stSidebar"] input::placeholder,
 section[data-testid="stSidebar"] textarea::placeholder {{
   color: #6B7A90 !important;
   -webkit-text-fill-color: #6B7A90 !important;
 }}
 
-/* Widget containers */
 section[data-testid="stSidebar"] [data-baseweb="input"],
 section[data-testid="stSidebar"] [data-baseweb="select"],
 section[data-testid="stSidebar"] .stFileUploader {{
@@ -263,7 +124,6 @@ section[data-testid="stSidebar"] .stFileUploader {{
   box-shadow: 0 6px 18px rgba(0,0,0,0.10);
 }}
 
-/* ✅ Fix multiselect tags readability (red pills) */
 section[data-testid="stSidebar"] [data-baseweb="tag"] {{
   background: #ff3b3b !important;
   border: 1px solid rgba(255,255,255,0.25) !important;
@@ -329,6 +189,7 @@ section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
   display:grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
+  margin-bottom: 18px;
 }}
 @media(max-width:1200px){{ .kpi-grid{{ grid-template-columns: repeat(2, 1fr);}} }}
 
@@ -371,8 +232,88 @@ section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
   margin: 0 0 10px;
 }}
 
-/* ====== Tabs / Buttons ====== */
-button[data-baseweb="tab"]{{ font-weight: 900 !important; }}
+/* ============================================
+   ✅ TABS — BEAUTIFUL & FULLY READABLE
+   ============================================ */
+
+/* Outer tabs container */
+[data-testid="stTabs"] {{
+  background: rgba(4, 14, 32, 0.82) !important;
+  border-radius: 20px !important;
+  padding: 8px !important;
+  border: 1px solid rgba(42, 163, 255, 0.30) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06) !important;
+}}
+
+/* Tab list / nav bar */
+[data-testid="stTabs"] [role="tablist"] {{
+  background: rgba(3, 10, 26, 0.88) !important;
+  border-radius: 14px !important;
+  padding: 5px 6px !important;
+  gap: 4px !important;
+  border: 1px solid rgba(42, 163, 255, 0.18) !important;
+  flex-wrap: wrap !important;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.40) !important;
+}}
+
+/* Each tab button — default (not selected) */
+button[data-baseweb="tab"] {{
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  color: rgba(160, 210, 255, 0.90) !important;
+  -webkit-text-fill-color: rgba(160, 210, 255, 0.90) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 10px !important;
+  padding: 9px 15px !important;
+  border: 1px solid rgba(42, 163, 255, 0.12) !important;
+  transition: all 0.20s ease !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  text-shadow: none !important;
+}}
+
+/* Hover */
+button[data-baseweb="tab"]:hover {{
+  background: rgba(42, 163, 255, 0.18) !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  border-color: rgba(42, 163, 255, 0.55) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 16px rgba(42, 163, 255, 0.28) !important;
+}}
+
+/* ACTIVE / SELECTED tab */
+button[data-baseweb="tab"][aria-selected="true"] {{
+  background: linear-gradient(135deg, #1560c8 0%, #2AA3FF 100%) !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  border-color: rgba(80, 180, 255, 0.70) !important;
+  box-shadow: 0 4px 20px rgba(42, 163, 255, 0.55), inset 0 1px 0 rgba(255,255,255,0.25) !important;
+  transform: translateY(-1px) !important;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.30) !important;
+}}
+
+/* Hide the default Streamlit blue underline bar */
+[data-testid="stTabs"] [role="tablist"] [data-baseweb="tab-highlight"],
+[data-testid="stTabs"] [role="tablist"] [data-baseweb="tab-border"] {{
+  display: none !important;
+  background: transparent !important;
+}}
+
+/* Tab content panel */
+[data-testid="stTabs"] [role="tabpanel"] {{
+  background: rgba(5, 17, 40, 0.65) !important;
+  border-radius: 0 0 14px 14px !important;
+  padding: 18px 14px !important;
+  border: 1px solid rgba(42, 163, 255, 0.12) !important;
+  border-top: none !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}}
+
+/* ====== Buttons ====== */
 .stDownloadButton button, .stButton button {{
   border-radius: 12px !important;
   font-weight: 900 !important;
@@ -462,7 +403,7 @@ def build_agg(df: pd.DataFrame, freq: str) -> pd.DataFrame:
     )
     return out
 
-def make_series(agg: pd.DataFrame, cats: list[str], metric_col: str,
+def make_series(agg: pd.DataFrame, cats: list, metric_col: str,
                 start: pd.Timestamp, end: pd.Timestamp, freq: str) -> pd.Series:
     d = agg[(agg["ds"] >= start) & (agg["ds"] <= end)].copy()
     d = d[d["Cargo Category"].isin(cats)]
@@ -551,7 +492,7 @@ with st.spinner("Loading dataset..."):
 agg = build_agg(df, freq=freq)
 
 # =========================
-# FILTERS (Categories + Crossings + Date Range)
+# FILTERS
 # =========================
 all_categories = sorted(agg["Cargo Category"].unique().tolist())
 all_crossings = sorted(agg["Crossing"].unique().tolist())
@@ -611,7 +552,6 @@ periods_count = int(len(series))
 gap_total = float((required_per_period - series).clip(lower=0).sum())
 coverage_rate = float((series >= required_per_period).mean() * 100) if periods_count else 0.0
 
-# momentum: last vs avg of previous 4
 if len(series) >= 5:
     last_val = float(series.iloc[-1])
     prev4 = float(series.iloc[-5:-1].mean())
@@ -872,12 +812,11 @@ with tab7:
             else:
                 st.info("Forecast risk insights require more data. Expand the date range or adjust filters.")
 
-# -------- TAB 8: GAZA MAP HEATMAP (Crossings) --------
+# -------- TAB 8: GAZA MAP HEATMAP --------
 with tab8:
     st.markdown('<h3 class="h-sec">Gaza Map Heatmap (Crossings)</h3>', unsafe_allow_html=True)
     st.markdown('<p class="p-muted">Heat intensity shows estimated aid inflow concentration by crossing.</p>', unsafe_allow_html=True)
 
-    # Coordinates are approximate. You can refine them later.
     crossing_coords = {
         "Erez": (31.559, 34.565),
         "Western Erez": (31.555, 34.560),
@@ -885,10 +824,9 @@ with tab8:
         "Rafah Crossing": (31.262, 34.247),
         "Gate 96": (31.250, 34.320),
         "Kissufim": (31.367, 34.403),
-        "JLOTS": (31.520, 34.430),  # approximate maritime point
+        "JLOTS": (31.520, 34.430),
     }
 
-    # Filter raw df by date + selections
     dmap = df.copy()
     dmap = dmap[(dmap["Received Date"] >= pd.to_datetime(start)) & (dmap["Received Date"] <= pd.to_datetime(end))]
 
@@ -908,7 +846,7 @@ with tab8:
     cross_sum = cross_sum.dropna(subset=["lat", "lon"])
 
     if cross_sum.empty:
-        st.info("No crossings with known coordinates for current filters. Add/update coordinates in crossing_coords.")
+        st.info("No crossings with known coordinates for current filters.")
     else:
         fig = px.density_mapbox(
             cross_sum,
@@ -943,12 +881,5 @@ with tab8:
         fig.update_layout(height=620, margin=dict(l=10, r=10, t=60, b=10))
         st.plotly_chart(fig, use_container_width=True)
 
-        st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
-
+        st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
-
-
-
-
-
-
