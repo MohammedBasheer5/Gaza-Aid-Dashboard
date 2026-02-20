@@ -116,47 +116,12 @@ section[data-testid="stSidebar"] textarea::placeholder {{
 }}
 
 section[data-testid="stSidebar"] [data-baseweb="input"],
-section[data-testid="stSidebar"] [data-baseweb="select"] {{
+section[data-testid="stSidebar"] [data-baseweb="select"],
+section[data-testid="stSidebar"] .stFileUploader {{
   background: #FFFFFF !important;
   border-radius: 12px;
   padding: 6px 8px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.10);
-}}
-
-/* File uploader — white card, dark readable text */
-section[data-testid="stSidebar"] [data-testid="stFileUploader"] {{
-  background: #FFFFFF !important;
-  border-radius: 12px !important;
-  padding: 10px !important;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.15) !important;
-}}
-section[data-testid="stSidebar"] [data-testid="stFileUploader"] label,
-section[data-testid="stSidebar"] [data-testid="stFileUploader"] label p,
-section[data-testid="stSidebar"] [data-testid="stFileUploader"] label span {{
-  color: #0B1F3A !important;
-  -webkit-text-fill-color: #0B1F3A !important;
-  font-weight: 700 !important;
-}}
-section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {{
-  background: #EEF4FF !important;
-  border: 1.5px dashed #3B8ED6 !important;
-  border-radius: 10px !important;
-}}
-section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] * {{
-  color: #0B1F3A !important;
-  -webkit-text-fill-color: #0B1F3A !important;
-}}
-section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] small {{
-  color: #4A6080 !important;
-  -webkit-text-fill-color: #4A6080 !important;
-}}
-section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {{
-  background: #FFFFFF !important;
-  color: #0B1F3A !important;
-  -webkit-text-fill-color: #0B1F3A !important;
-  border: 1px solid #3B8ED6 !important;
-  border-radius: 8px !important;
-  font-weight: 700 !important;
 }}
 
 section[data-testid="stSidebar"] [data-baseweb="tag"] {{
@@ -174,68 +139,114 @@ section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
 }}
 
 /* ====== Header ====== */
-.hero-wrapper {{
-  text-align: center;
-  padding: 18px 0 6px 0;
-}}
-.hero-icon {{
-  font-size: 3.2rem;
-  line-height: 1;
-  margin-bottom: 6px;
-  filter: drop-shadow(0 4px 14px rgba(42,163,255,0.60));
-}}
 .pro-title {{
   text-align: center;
   font-weight: 950;
-  font-size: 3.6rem !important;
-  letter-spacing: -1px;
-  margin: 0 0 10px 0;
+  font-size: 3.8rem !important;
+  letter-spacing: -0.5px;
+  margin: 10px 0 8px 0;
   color: #FFFFFF !important;
   -webkit-text-fill-color: #FFFFFF !important;
   text-shadow:
-    0 0 50px rgba(42,163,255,0.80),
-    0 0 100px rgba(42,163,255,0.35),
-    0 4px 24px rgba(0,0,0,0.90);
+    0 0 40px rgba(42,163,255,0.90),
+    0 0 80px rgba(42,163,255,0.50),
+    0 4px 20px rgba(0,0,0,0.80),
+    2px 2px 0px rgba(0,80,160,0.60);
 }}
 .pro-sub {{
   text-align: center;
-  font-size: 1.45rem !important;
-  font-weight: 600;
-  margin: 0 0 10px 0;
-  color: #90C8F0 !important;
-  -webkit-text-fill-color: #90C8F0 !important;
-  letter-spacing: 0.3px;
-  text-shadow: 0 2px 16px rgba(0,0,0,0.85);
-}}
-.pro-divider-line {{
-  width: 80px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(42,163,255,0.90), transparent);
-  margin: 0 auto 10px auto;
-  border-radius: 2px;
+  font-size: 1.60rem !important;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  color: #E0F4FF !important;
+  -webkit-text-fill-color: #E0F4FF !important;
+  text-shadow:
+    0 0 30px rgba(42,163,255,0.70),
+    0 3px 14px rgba(0,0,0,0.75);
 }}
 .pro-sub2 {{
   text-align: center;
-  font-size: 0.95rem !important;
-  font-weight: 500;
-  margin: 0 0 6px 0;
-  color: rgba(255, 220, 160, 0.92) !important;
-  -webkit-text-fill-color: rgba(255, 220, 160, 0.92) !important;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  text-shadow: 0 2px 14px rgba(0,0,0,0.80);
+  font-size: 1.15rem !important;
+  font-weight: 600;
+  margin: 0 0 14px 0;
+  color: #C8E8FF !important;
+  -webkit-text-fill-color: #C8E8FF !important;
+  letter-spacing: 2.5px;
+  text-shadow:
+    0 0 22px rgba(42,163,255,0.55),
+    0 2px 12px rgba(0,0,0,0.80);
 }}
 .pro-hr {{
   border: 0;
-  height: 1px;
+  height: 2px;
   background: linear-gradient(90deg,
     transparent,
-    rgba(42,163,255,0.55),
-    rgba(255,220,120,0.75),
-    rgba(42,163,255,0.55),
+    rgba(42,163,255,0.90),
+    rgba(255,220,100,0.80),
+    rgba(42,163,255,0.90),
     transparent);
-  margin: 14px 0 18px;
+  margin: 10px 0 18px;
   border-radius: 2px;
+  box-shadow: 0 0 12px rgba(42,163,255,0.40);
+}}
+
+/* ====== Fix File Uploader — full dark styling ====== */
+
+/* Remove the outer white container entirely */
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] {{
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}}
+
+/* Style the actual dropzone */
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {{
+  background: rgba(8, 22, 55, 0.88) !important;
+  border: 1.5px dashed rgba(42, 163, 255, 0.55) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}}
+
+/* All text inside dropzone */
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] * {{
+  color: #A8D8FF !important;
+  -webkit-text-fill-color: #A8D8FF !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] div span {{
+  color: #C8EAFF !important;
+  -webkit-text-fill-color: #C8EAFF !important;
+  font-weight: 700 !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] div small {{
+  color: rgba(140, 200, 255, 0.80) !important;
+  -webkit-text-fill-color: rgba(140, 200, 255, 0.80) !important;
+}}
+
+/* Browse files button */
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {{
+  background: rgba(42, 163, 255, 0.18) !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  border: 1px solid rgba(42, 163, 255, 0.50) !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+}}
+
+/* Also fix the label "Upload Excel (.xlsx)" above the box */
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] label {{
+  color: #EAF2FF !important;
+  -webkit-text-fill-color: #EAF2FF !important;
+}}
+
+/* Fix white background on the [data-baseweb] container wrapping uploader */
+section[data-testid="stSidebar"] [data-baseweb="input"],
+section[data-testid="stSidebar"] [data-baseweb="select"],
+section[data-testid="stSidebar"] .stFileUploader {{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
 }}
 
 /* ====== Badges ====== */
@@ -560,15 +571,10 @@ def hw_forecast(series: pd.Series, periods: int, freq: str) -> pd.Series:
 # =========================
 # HEADER
 # =========================
-st.markdown('''
-<div class="hero-wrapper">
-  <h1 class="pro-title">Gaza Aid Intelligence</h1>
-  <h3 class="pro-sub">Real-Time Monitoring &amp; Predictive Analytics</h3>
-  <div class="pro-divider-line"></div>
-  <h4 class="pro-sub2">Humanitarian Flow &nbsp;•&nbsp; Supply Gaps &nbsp;•&nbsp; Forecasting</h4>
-</div>
-<hr class="pro-hr">
-''', unsafe_allow_html=True)
+st.markdown('<h1 class="pro-title">📊 Gaza Aid Intelligence</h1>', unsafe_allow_html=True)
+st.markdown('<h3 class="pro-sub">Real-Time Monitoring & Predictive Analytics</h3>', unsafe_allow_html=True)
+st.markdown('<h4 class="pro-sub2">Humanitarian Flow • Supply Gaps • Forecasting</h4>', unsafe_allow_html=True)
+st.markdown('<hr class="pro-hr">', unsafe_allow_html=True)
 
 # =========================
 # SIDEBAR
