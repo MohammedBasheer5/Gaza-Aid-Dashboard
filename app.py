@@ -86,176 +86,56 @@ if bg_b64:
 st.markdown(
     f"""
 <style>
-:root{{
-  --bg:#0b1630;
-  --card: rgba(255,255,255,0.92);
-  --ink:#0B1F3A;
-  --muted:#51627A;
-  --navy:#06152b;
-  --blue:#2AA3FF;
-  --border: rgba(210, 225, 255, 0.70);
-  --shadow: 0 14px 35px rgba(0,0,0,0.25);
-  --shadow2: 0 10px 26px rgba(0,0,0,0.18);
-}}
-
-{bg_css}
-
-/* ====== Sidebar ====== */
-section[data-testid="stSidebar"] {{
-  background: linear-gradient(180deg, #06152b 0%, #061b38 100%);
-  border-right: 1px solid rgba(255,255,255,0.08);
-}}
-section[data-testid="stSidebar"] * {{
-  color: #EAF2FF !important;
-}}
-section[data-testid="stSidebar"] a {{
-  color: #BFE3FF !important;
-}}
-
-/* ✅ Fix: readable text INSIDE white widgets in sidebar */
-section[data-testid="stSidebar"] input,
-section[data-testid="stSidebar"] textarea,
-section[data-testid="stSidebar"] select,
-section[data-testid="stSidebar"] [data-baseweb="input"] input,
-section[data-testid="stSidebar"] [data-baseweb="select"] input,
-section[data-testid="stSidebar"] [data-baseweb="select"] div,
-section[data-testid="stSidebar"] [role="combobox"],
-section[data-testid="stSidebar"] [role="spinbutton"] {{
-  color: var(--ink) !important;
-  -webkit-text-fill-color: var(--ink) !important;
-}}
-
-/* Placeholder in sidebar widgets */
-section[data-testid="stSidebar"] input::placeholder,
-section[data-testid="stSidebar"] textarea::placeholder {{
-  color: #6B7A90 !important;
-  -webkit-text-fill-color: #6B7A90 !important;
-}}
-
-/* Widget containers */
-section[data-testid="stSidebar"] [data-baseweb="input"],
-section[data-testid="stSidebar"] [data-baseweb="select"],
-section[data-testid="stSidebar"] .stFileUploader {{
-  background: #FFFFFF !important;
-  border-radius: 12px;
-  padding: 6px 8px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
-}}
-
-/* ✅ Fix multiselect tags readability (red pills) */
-section[data-testid="stSidebar"] [data-baseweb="tag"] {{
-  background: #ff3b3b !important;
-  border: 1px solid rgba(255,255,255,0.25) !important;
-}}
-section[data-testid="stSidebar"] [data-baseweb="tag"] span {{
-  color: #ffffff !important;
-  font-weight: 900 !important;
-}}
-section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
-  color: #ffffff !important;
-  fill: #ffffff !important;
-  opacity: 0.95 !important;
-}}
-
-/* ====== Header ====== */
-.pro-title {{
+/* ====== HEADER TEXT FIX (Readable on any background) ====== */
+.pro-title{
   text-align:center;
-  font-weight: 950;
-  letter-spacing: .2px;
-  color: #FFFFFF;
-  margin: 6px 0 2px 0;
-  text-shadow: 0 8px 22px rgba(0,0,0,0.25);
-}}
-.pro-sub {{
+  font-weight: 1000;
+  font-size: 54px;
+  letter-spacing: .3px;
+  color: #FFFFFF !important;
+  margin: 12px 0 6px 0;
+
+  /* Strong shadow for readability */
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.55),
+    0 10px 28px rgba(0,0,0,.65);
+}
+
+/* subtitle 1 */
+.pro-sub{
   text-align:center;
-  color: #9bd6ff;
-  margin: 0 0 2px 0;
-  font-weight: 850;
-}}
-.pro-sub2 {{
-  text-align:center;
-  color: #59b8ff;
-  margin: 0 0 10px 0;
   font-weight: 900;
-}}
-.pro-hr {{
-  border: 0;
-  height:1px;
-  background: linear-gradient(90deg, transparent, rgba(160,210,255,0.7), transparent);
-  margin: 12px 0 14px;
-}}
+  font-size: 24px;
+  margin: 0 0 6px 0;
+  color: #D7F0FF !important;
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.50),
+    0 8px 20px rgba(0,0,0,.55);
+}
 
-/* ====== Badges ====== */
-.badge {{
-  display:inline-block;
-  padding: 6px 12px;
-  border-radius: 999px;
+/* subtitle 2 */
+.pro-sub2{
+  text-align:center;
   font-weight: 900;
-  font-size: 12px;
-  border: 1px solid rgba(210,225,255,0.55);
-  background: rgba(255,255,255,0.75);
-  color: #0b2a52;
-  box-shadow: var(--shadow2);
-}}
-.badge.dark {{
-  background: rgba(7, 23, 51, 0.55);
-  color: #EAF2FF;
-  border: 1px solid rgba(255,255,255,0.12);
-}}
+  font-size: 20px;
+  margin: 0 0 14px 0;
+  color: #7DD3FF !important;
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.45),
+    0 8px 18px rgba(0,0,0,.50);
+}
 
-/* ====== KPI cards ====== */
-.kpi-grid {{
-  display:grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-}}
-@media(max-width:1200px){{ .kpi-grid{{ grid-template-columns: repeat(2, 1fr);}} }}
-
-.kpi {{
-  background: var(--card);
-  border: 1px solid var(--border);
+/* Optional: put a soft glass background behind the header only */
+.header-glass{
+  width: fit-content;
+  max-width: 95%;
+  margin: 0 auto 6px auto;
+  padding: 14px 18px;
   border-radius: 18px;
-  padding: 14px 14px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(4px);
-}}
-.kpi .t {{
-  color: var(--muted);
-  font-weight: 900;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .6px;
-}}
-.kpi .v {{
-  color: var(--ink);
-  font-weight: 950;
-  font-size: 26px;
-  margin-top: 6px;
-}}
-.kpi .n {{
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 6px;
-}}
-
-/* ====== Sections ====== */
-.h-sec {{
-  color: #FFFFFF;
-  font-weight: 950;
-  margin: 6px 0 2px;
-  text-shadow: 0 8px 22px rgba(0,0,0,0.25);
-}}
-.p-muted {{
-  color: rgba(255,255,255,0.80);
-  margin: 0 0 10px;
-}}
-
-/* ====== Tabs / Buttons ====== */
-button[data-baseweb="tab"]{{ font-weight: 900 !important; }}
-.stDownloadButton button, .stButton button {{
-  border-radius: 12px !important;
-  font-weight: 900 !important;
-}}
+  background: rgba(0,0,0,.28);
+  border: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(6px);
+}
 </style>
 """,
     unsafe_allow_html=True,
@@ -825,3 +705,4 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
 
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
