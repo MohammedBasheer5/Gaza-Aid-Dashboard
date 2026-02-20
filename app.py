@@ -595,11 +595,13 @@ def hw_forecast(series: pd.Series, periods: int, freq: str) -> pd.Series:
 # =========================
 # HEADER
 # =========================
-st.markdown('<h1 class="pro-title">📊 Gaza Aid Intelligence</h1>', unsafe_allow_html=True)
-st.markdown('<h3 class="pro-sub">Real-Time Monitoring & Predictive Analytics</h3>', unsafe_allow_html=True)
-st.markdown('<h4 class="pro-sub2">Humanitarian Flow • Supply Gaps • Forecasting</h4>', unsafe_allow_html=True)
-st.markdown('<hr class="pro-hr">', unsafe_allow_html=True)
-
+st.markdown("""
+<div class="hero">
+  <div class="title">📊 Gaza Aid Intelligence</div>
+  <div class="sub">Real-Time Monitoring & Predictive Analytics</div>
+  <div class="sub2">Humanitarian Flow • Supply Gaps • Forecasting</div>
+</div>
+""", unsafe_allow_html=True)
 # =========================
 # SIDEBAR
 # =========================
@@ -1038,6 +1040,7 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
 
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
 
 
 
