@@ -7,21 +7,15 @@ import base64
 from pathlib import Path
 
 # =========================================================
-# Gaza Aid Intelligence — Pro Dashboard (FULL)
-# - Pro theme + Gaza background image (gaza_bg.jpg)
-# - Fix sidebar widget text (white boxes) + multiselect tag readability
-# - Filters: Metric, Aggregation, Required, Forecast Horizon
-# - Filters: Cargo Categories + Crossings + Date Range
-# - KPI Cards + Tabs
-# - Forecast: Holt-Winters with robust fallback
-# - NEW: Gaza Map Heatmap (by crossings) + table
+# Gaza Aid Intelligence — Pro Dashboard (SAFE THEME ✅)
+# - Background image (gaza_bg.jpg) + simple overlay (NO z-index tricks)
+# - Glass-like main content so everything remains readable
+# - Fix sidebar widgets + tags + file uploader visibility
+# - KPI + Tabs + Forecast + Gaza Map Heatmap
 # =========================================================
 
-# =========================
-# CONFIG
-# =========================
 DEFAULT_FILE_PATH = "commodities-received-13.xlsx"
-BG_IMAGE_PATH = "gaza_bg.jpg"  # ضع الصورة بنفس مجلد app.py
+BG_IMAGE_PATH = "gaza_bg.jpg"
 
 st.set_page_config(
     page_title="Gaza Aid Intelligence",
@@ -29,233 +23,167 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-import base64
-from pathlib import Path
-
-def set_background(image_file):
-    img_path = Path(image_file)
-
-    if img_path.exists():
-        with open(img_path, "rb") as f:
-            encoded = base64.b64encode(f.read()).decode()
-
-        st.markdown(
-            f"""
-            <style>
-            .stApp {{
-                background: linear-gradient(rgba(7,27,51,0.65), rgba(7,27,51,0.65)),
-                            url("data:image/jpg;base64,{encoded}");
-                background-size: cover;
-                background-position: center;
-                background-attachment: fixed;
-            }}
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-    else:
-        st.warning("Background image not found.")
-
-set_background("gaza_bg.jpg")
 
 # =========================
-# THEME / CSS (PRO + BACKGROUND + FIX TAGS)
+# SAFE BACKGROUND + CSS
 # =========================
-def _img_to_base64(path: str) -> str | None:
+def img_to_b64(path: str):
     p = Path(path)
     if not p.exists():
         return None
     return base64.b64encode(p.read_bytes()).decode("utf-8")
 
-bg_b64 = _img_to_base64(BG_IMAGE_PATH)
+bg_b64 = img_to_b64(BG_IMAGE_PATH)
 
 bg_css = ""
 if bg_b64:
     bg_css = f"""
-/* ====== Main background with Gaza image ====== */
-.main {{
-  background:
-    linear-gradient(rgba(6, 20, 43, 0.70), rgba(6, 20, 43, 0.70)),
-    url("data:image/jpg;base64,{bg_b64}");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}}
-"""
+    /* Background on the whole app container */
+    [data-testid="stAppViewContainer"] {{
+        background-image:
+          linear-gradient(rgba(6,20,43,0.55), rgba(6,20,43,0.55)),
+          url("data:image/jpg;base64,{bg_b64}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }}
+    """
 
 st.markdown(
     f"""
 <style>
 :root{{
-  --bg:#0b1630;
-  --card: rgba(255,255,255,0.92);
   --ink:#0B1F3A;
-  --muted:#51627A;
-  --navy:#06152b;
-  --blue:#2AA3FF;
-  --border: rgba(210, 225, 255, 0.70);
-  --shadow: 0 14px 35px rgba(0,0,0,0.25);
-  --shadow2: 0 10px 26px rgba(0,0,0,0.18);
+  --muted:#5B6B82;
+  --navy:#071B33;
+  --navy2:#06162B;
+  --border: rgba(217,230,255,.85);
+  --accent:#2AA3FF;
+  --danger:#EF4444;
 }}
 
+/* Apply background */
 {bg_css}
 
-/* ====== Sidebar ====== */
-section[data-testid="stSidebar"] {{
-  background: linear-gradient(180deg, #06152b 0%, #061b38 100%);
-  border-right: 1px solid rgba(255,255,255,0.08);
+/* Main content glass panel (SAFE selectors) */
+[data-testid="stAppViewContainer"] .main {{
+  padding-top: 10px;
 }}
-section[data-testid="stSidebar"] * {{
-  color: #EAF2FF !important;
-}}
-section[data-testid="stSidebar"] a {{
-  color: #BFE3FF !important;
-}}
-
-/* ✅ Fix: readable text INSIDE white widgets in sidebar */
-section[data-testid="stSidebar"] input,
-section[data-testid="stSidebar"] textarea,
-section[data-testid="stSidebar"] select,
-section[data-testid="stSidebar"] [data-baseweb="input"] input,
-section[data-testid="stSidebar"] [data-baseweb="select"] input,
-section[data-testid="stSidebar"] [data-baseweb="select"] div,
-section[data-testid="stSidebar"] [role="combobox"],
-section[data-testid="stSidebar"] [role="spinbutton"] {{
-  color: var(--ink) !important;
-  -webkit-text-fill-color: var(--ink) !important;
+[data-testid="stAppViewContainer"] .main .block-container {{
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(217,230,255,.65);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(0,0,0,.18);
+  backdrop-filter: blur(6px);
+  padding: 26px 26px 40px 26px;
 }}
 
-/* Placeholder in sidebar widgets */
-section[data-testid="stSidebar"] input::placeholder,
-section[data-testid="stSidebar"] textarea::placeholder {{
-  color: #6B7A90 !important;
-  -webkit-text-fill-color: #6B7A90 !important;
+/* Header */
+.pro-title{{
+  text-align:center; font-weight: 950; letter-spacing:.2px;
+  color: #FFFFFF; margin: 6px 0 2px 0;
+  text-shadow: 0 10px 26px rgba(0,0,0,.35);
 }}
-
-/* Widget containers */
-section[data-testid="stSidebar"] [data-baseweb="input"],
-section[data-testid="stSidebar"] [data-baseweb="select"],
-section[data-testid="stSidebar"] .stFileUploader {{
-  background: #FFFFFF !important;
-  border-radius: 12px;
-  padding: 6px 8px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+.pro-sub{{
+  text-align:center; color: #CFEAFF; margin: 0 0 2px 0; font-weight: 850;
 }}
-
-/* ✅ Fix multiselect tags readability (red pills) */
-section[data-testid="stSidebar"] [data-baseweb="tag"] {{
-  background: #ff3b3b !important;
-  border: 1px solid rgba(255,255,255,0.25) !important;
+.pro-sub2{{
+  text-align:center; color: #86CBFF; margin: 0 0 10px 0; font-weight: 900;
 }}
-section[data-testid="stSidebar"] [data-baseweb="tag"] span {{
-  color: #ffffff !important;
-  font-weight: 900 !important;
-}}
-section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
-  color: #ffffff !important;
-  fill: #ffffff !important;
-  opacity: 0.95 !important;
-}}
-
-/* ====== Header ====== */
-.pro-title {{
-  text-align:center;
-  font-weight: 950;
-  letter-spacing: .2px;
-  color: #FFFFFF;
-  margin: 6px 0 2px 0;
-  text-shadow: 0 8px 22px rgba(0,0,0,0.25);
-}}
-.pro-sub {{
-  text-align:center;
-  color: #9bd6ff;
-  margin: 0 0 2px 0;
-  font-weight: 850;
-}}
-.pro-sub2 {{
-  text-align:center;
-  color: #59b8ff;
-  margin: 0 0 10px 0;
-  font-weight: 900;
-}}
-.pro-hr {{
-  border: 0;
-  height:1px;
+.pro-hr{{
+  border: 0; height:1px;
   background: linear-gradient(90deg, transparent, rgba(160,210,255,0.7), transparent);
   margin: 12px 0 14px;
 }}
 
-/* ====== Badges ====== */
-.badge {{
-  display:inline-block;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-weight: 900;
-  font-size: 12px;
-  border: 1px solid rgba(210,225,255,0.55);
-  background: rgba(255,255,255,0.75);
-  color: #0b2a52;
-  box-shadow: var(--shadow2);
-}}
-.badge.dark {{
-  background: rgba(7, 23, 51, 0.55);
+/* Section headings inside panel */
+.h-sec{{ color: var(--ink); font-weight: 950; margin: 10px 0 2px; }}
+.p-muted{{ color: var(--muted); margin: 0 0 10px; }}
+
+/* Badges */
+.badge{{
+  display:inline-block; padding: 6px 12px; border-radius: 999px;
+  font-weight: 900; font-size: 12px;
+  border: 1px solid rgba(210,225,255,0.65);
+  background: rgba(7, 23, 51, 0.78);
   color: #EAF2FF;
-  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 10px 26px rgba(0,0,0,.18);
 }}
 
-/* ====== KPI cards ====== */
-.kpi-grid {{
-  display:grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-}}
+/* KPI cards */
+.kpi-grid{{ display:grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }}
 @media(max-width:1200px){{ .kpi-grid{{ grid-template-columns: repeat(2, 1fr);}} }}
-
-.kpi {{
-  background: var(--card);
-  border: 1px solid var(--border);
+.kpi{{
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(217,230,255,.92);
   border-radius: 18px;
   padding: 14px 14px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(4px);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.12);
 }}
-.kpi .t {{
-  color: var(--muted);
-  font-weight: 900;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .6px;
+.kpi .t{{ color: var(--muted); font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: .6px; }}
+.kpi .v{{ color: var(--ink); font-weight: 950; font-size: 26px; margin-top: 6px; }}
+.kpi .n{{ color: var(--muted); font-size: 12px; margin-top: 6px; }}
+
+/* Sidebar */
+section[data-testid="stSidebar"]{{
+  background: linear-gradient(180deg, var(--navy) 0%, var(--navy2) 100%) !important;
+  border-right: 1px solid rgba(255,255,255,.06);
 }}
-.kpi .v {{
-  color: var(--ink);
-  font-weight: 950;
-  font-size: 26px;
-  margin-top: 6px;
-}}
-.kpi .n {{
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 6px;
+section[data-testid="stSidebar"] *{{ color: #EAF2FF !important; }}
+
+/* Sidebar widget containers */
+section[data-testid="stSidebar"] .stFileUploader,
+section[data-testid="stSidebar"] [data-baseweb="select"],
+section[data-testid="stSidebar"] [data-baseweb="input"],
+section[data-testid="stSidebar"] [data-baseweb="textarea"]{{
+  background: rgba(255,255,255,.10) !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  padding: 8px 10px !important;
 }}
 
-/* ====== Sections ====== */
-.h-sec {{
-  color: #FFFFFF;
-  font-weight: 950;
-  margin: 6px 0 2px;
-  text-shadow: 0 8px 22px rgba(0,0,0,0.25);
-}}
-.p-muted {{
-  color: rgba(255,255,255,0.80);
-  margin: 0 0 10px;
+/* Inputs readable */
+section[data-testid="stSidebar"] input,
+section[data-testid="stSidebar"] textarea,
+section[data-testid="stSidebar"] [data-baseweb="input"] input,
+section[data-testid="stSidebar"] [role="combobox"] input,
+section[data-testid="stSidebar"] [role="spinbutton"] input{{
+  color: #0B1F3A !important;
+  -webkit-text-fill-color:#0B1F3A !important;
+  background: rgba(255,255,255,.95) !important;
+  border-radius: 12px !important;
 }}
 
-/* ====== Tabs / Buttons ====== */
-button[data-baseweb="tab"]{{ font-weight: 900 !important; }}
-.stDownloadButton button, .stButton button {{
+/* File uploader dropzone + button */
+section[data-testid="stSidebar"] .stFileUploader div[data-testid="stFileUploaderDropzone"]{{
+  background: rgba(255,255,255,.95) !important;
+  border: 1px dashed rgba(7,27,51,.35) !important;
+  border-radius: 14px !important;
+}}
+section[data-testid="stSidebar"] .stFileUploader div[data-testid="stFileUploaderDropzone"] *{{
+  color:#0B1F3A !important;
+}}
+section[data-testid="stSidebar"] .stFileUploader button{{
+  background: var(--accent) !important;
+  color: white !important;
   border-radius: 12px !important;
   font-weight: 900 !important;
+  border: 0 !important;
+  width: 100% !important;
+  padding: 10px 14px !important;
 }}
+
+/* Multiselect tags readable */
+section[data-testid="stSidebar"] span[data-baseweb="tag"]{{
+  background: rgba(239,68,68,.20) !important;
+  border: 1px solid rgba(239,68,68,.55) !important;
+}}
+section[data-testid="stSidebar"] span[data-baseweb="tag"] span{{ color: #FFECEC !important; font-weight: 900 !important; }}
+section[data-testid="stSidebar"] span[data-baseweb="tag"] svg{{ fill:#FFECEC !important; }}
+
+/* Tabs / Buttons */
+button[data-baseweb="tab"]{{ font-weight: 900 !important; }}
+.stButton button, .stDownloadButton button{{ border-radius: 12px !important; font-weight: 900 !important; }}
 </style>
 """,
     unsafe_allow_html=True,
@@ -303,28 +231,9 @@ def load_and_clean(file_bytes=None, path=None):
 
     df["Received Date"] = pd.to_datetime(df["Received Date"], errors="coerce")
     df["No. of Trucks"] = pd.to_numeric(df["No. of Trucks"], errors="coerce").fillna(0)
-
-    if "Quantity" in df.columns:
-        df["Quantity"] = pd.to_numeric(df["Quantity"], errors="coerce").fillna(0)
-    else:
-        df["Quantity"] = 0
-
+    df["Quantity"] = pd.to_numeric(df["Quantity"], errors="coerce").fillna(0) if "Quantity" in df.columns else 0
     df["Cargo Category"] = df["Cargo Category"].fillna("Unknown").astype(str)
-
-    if "Crossing" in df.columns:
-        df["Crossing"] = df["Crossing"].fillna("Unknown").astype(str)
-    else:
-        df["Crossing"] = "Unknown"
-
-    if "Status" in df.columns:
-        df["Status"] = df["Status"].fillna("Unknown").astype(str)
-    else:
-        df["Status"] = "Unknown"
-
-    if "Destination Recipient/ Partner" in df.columns:
-        df["Destination Recipient/ Partner"] = df["Destination Recipient/ Partner"].fillna("Unknown").astype(str)
-    else:
-        df["Destination Recipient/ Partner"] = "Unknown"
+    df["Crossing"] = df["Crossing"].fillna("Unknown").astype(str) if "Crossing" in df.columns else "Unknown"
 
     df = df.dropna(subset=["Received Date"])
     return df, src
@@ -366,10 +275,9 @@ def hw_forecast(series: pd.Series, periods: int, freq: str) -> pd.Series:
 
     try:
         model = ExponentialSmoothing(
-            series,
-            trend="add",
+            series, trend="add",
             seasonal="add" if ok else None,
-            seasonal_periods=sp if ok else None,
+            seasonal_periods=sp if ok else None
         ).fit(optimized=True)
         return model.forecast(periods).clip(lower=0)
     except Exception:
@@ -408,10 +316,7 @@ required_per_period = st.sidebar.number_input(
     step=10.0,
 )
 
-forecast_periods = st.sidebar.slider(
-    f"Forecast Horizon ({freq_label.lower()} periods)", 7, 60, 21
-)
-
+forecast_periods = st.sidebar.slider(f"Forecast Horizon ({freq_label.lower()} periods)", 7, 60, 21)
 show_zeros = st.sidebar.toggle("Include Zero Periods", value=True)
 
 # =========================
@@ -430,7 +335,7 @@ with st.spinner("Loading dataset..."):
 agg = build_agg(df, freq=freq)
 
 # =========================
-# FILTERS (Categories + Crossings + Date Range)
+# FILTERS
 # =========================
 all_categories = sorted(agg["Cargo Category"].unique().tolist())
 all_crossings = sorted(agg["Crossing"].unique().tolist())
@@ -472,17 +377,17 @@ enough_data = (len(series) >= 8) and (series.sum() > 0)
 # =========================
 b1, b2 = st.columns([1, 1])
 with b1:
-    st.markdown(f'<span class="badge dark">Source: {src_badge}</span>', unsafe_allow_html=True)
+    st.markdown(f'<span class="badge">Source: {src_badge}</span>', unsafe_allow_html=True)
 with b2:
     st.markdown(
         f'<div style="text-align:right;">'
-        f'<span class="badge dark">Range: {start.date()} → {end.date()} • {freq_label} • {metric}</span>'
+        f'<span class="badge">Range: {start.date()} → {end.date()} • {freq_label} • {metric}</span>'
         f'</div>',
         unsafe_allow_html=True,
     )
 
 # =========================
-# KPI ROW
+# KPI
 # =========================
 total_val = float(series.sum())
 avg_val = float(series.mean()) if len(series) else 0.0
@@ -490,7 +395,6 @@ periods_count = int(len(series))
 gap_total = float((required_per_period - series).clip(lower=0).sum())
 coverage_rate = float((series >= required_per_period).mean() * 100) if periods_count else 0.0
 
-# momentum: last vs avg of previous 4
 if len(series) >= 5:
     last_val = float(series.iloc[-1])
     prev4 = float(series.iloc[-5:-1].mean())
@@ -498,7 +402,8 @@ if len(series) >= 5:
 else:
     momentum = 0.0
 
-kpi_html = f"""
+st.markdown(
+    f"""
 <div class="kpi-grid">
   <div class="kpi"><div class="t">Total {metric}</div><div class="v">{fmt_int(total_val)}</div><div class="n">Selected filters & range</div></div>
   <div class="kpi"><div class="t">Avg / {freq_label}</div><div class="v">{fmt_float(avg_val)}</div><div class="n">Mean per period</div></div>
@@ -506,8 +411,9 @@ kpi_html = f"""
   <div class="kpi"><div class="t">Total Supply Gap</div><div class="v">{fmt_float(gap_total)}</div><div class="n">Sum(max(required - actual, 0))</div></div>
   <div class="kpi"><div class="t">Coverage ≥ Required</div><div class="v">{fmt_float(coverage_rate)}%</div><div class="n">Share meeting target</div></div>
 </div>
-"""
-st.markdown(kpi_html, unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # =========================
 # TABS
@@ -523,36 +429,29 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "🗺️ Gaza Map Heatmap"
 ])
 
-# -------- TAB 1: OVERVIEW --------
+# -------- TAB 1
 with tab1:
     st.markdown('<h3 class="h-sec">Executive Overview</h3>', unsafe_allow_html=True)
     st.markdown('<p class="p-muted">Top categories and crossings based on your current filters.</p>', unsafe_allow_html=True)
 
     c1, c2 = st.columns(2)
-
     with c1:
         cat_sum = (agg_f.groupby("Cargo Category", as_index=False)[metric_col]
                    .sum().sort_values(metric_col, ascending=False))
-        fig_cat = px.bar(
-            cat_sum.head(12),
-            x=metric_col, y="Cargo Category", orientation="h",
-            title=f"Top Categories by Total {metric}"
-        )
+        fig_cat = px.bar(cat_sum.head(12), x=metric_col, y="Cargo Category", orientation="h",
+                         title=f"Top Categories by Total {metric}")
         fig_cat.update_layout(height=420, margin=dict(l=20, r=20, t=50, b=20))
         st.plotly_chart(fig_cat, use_container_width=True)
 
     with c2:
         cross_sum = (agg_f.groupby("Crossing", as_index=False)[metric_col]
                      .sum().sort_values(metric_col, ascending=False))
-        fig_cross = px.bar(
-            cross_sum,
-            x=metric_col, y="Crossing", orientation="h",
-            title=f"Crossings by Total {metric}"
-        )
+        fig_cross = px.bar(cross_sum, x=metric_col, y="Crossing", orientation="h",
+                           title=f"Crossings by Total {metric}")
         fig_cross.update_layout(height=420, margin=dict(l=20, r=20, t=50, b=20))
         st.plotly_chart(fig_cross, use_container_width=True)
 
-# -------- TAB 2: TRENDS --------
+# -------- TAB 2
 with tab2:
     st.markdown('<h3 class="h-sec">Trends</h3>', unsafe_allow_html=True)
     st.markdown('<p class="p-muted">Time series trend + supply gap view.</p>', unsafe_allow_html=True)
@@ -565,17 +464,12 @@ with tab2:
         fig_line.update_layout(height=480, margin=dict(l=20, r=20, t=50, b=20))
         st.plotly_chart(fig_line, use_container_width=True)
 
-    gap_df = pd.DataFrame({
-        "date": series.index,
-        "actual": series.values,
-        "required": required_per_period,
-    })
+    gap_df = pd.DataFrame({"date": series.index, "actual": series.values, "required": required_per_period})
     gap_df["gap"] = (gap_df["required"] - gap_df["actual"]).clip(lower=0)
-
     st.markdown('<h3 class="h-sec">Supply Gap (Actual)</h3>', unsafe_allow_html=True)
     st.dataframe(gap_df[gap_df["gap"] > 0].head(80), use_container_width=True)
 
-# -------- TAB 3: COMPOSITION --------
+# -------- TAB 3
 with tab3:
     st.markdown('<h3 class="h-sec">Composition</h3>', unsafe_allow_html=True)
     st.markdown('<p class="p-muted">Category contribution over time (stacked area).</p>', unsafe_allow_html=True)
@@ -584,15 +478,12 @@ with tab3:
     if comp.empty:
         st.info("No composition data for current filters.")
     else:
-        fig_area = px.area(
-            comp,
-            x="ds", y=metric_col, color="Cargo Category",
-            title=f"Category Composition — {metric} ({freq_label})"
-        )
+        fig_area = px.area(comp, x="ds", y=metric_col, color="Cargo Category",
+                           title=f"Category Composition — {metric} ({freq_label})")
         fig_area.update_layout(height=520, margin=dict(l=20, r=20, t=50, b=20))
         st.plotly_chart(fig_area, use_container_width=True)
 
-# -------- TAB 4: FORECAST --------
+# -------- TAB 4
 with tab4:
     st.markdown('<h3 class="h-sec">Forecast</h3>', unsafe_allow_html=True)
     st.markdown('<p class="p-muted">Holt-Winters forecast with safe fallback for sparse data.</p>', unsafe_allow_html=True)
@@ -601,7 +492,6 @@ with tab4:
         st.warning("Not enough data for forecasting. Expand range or adjust filters.")
     else:
         fcst = hw_forecast(series, forecast_periods, freq=freq)
-
         hist_df = pd.DataFrame({"ds": series.index, "actual": series.values})
         fcst_df = pd.DataFrame({"ds": fcst.index, "forecast": fcst.values})
 
@@ -624,7 +514,7 @@ with tab4:
             mime="text/csv",
         )
 
-# -------- TAB 5: ALERTS --------
+# -------- TAB 5
 with tab5:
     st.markdown('<h3 class="h-sec">Alerts</h3>', unsafe_allow_html=True)
     st.markdown('<p class="p-muted">Alerts when required exceeds actual or forecast.</p>', unsafe_allow_html=True)
@@ -634,7 +524,6 @@ with tab5:
     actual_alerts = actual_alerts[actual_alerts["gap"] > 0].copy()
 
     a1, a2 = st.columns(2)
-
     with a1:
         st.markdown('<h3 class="h-sec">Actual Alerts (History)</h3>', unsafe_allow_html=True)
         st.dataframe(actual_alerts.head(120), use_container_width=True)
@@ -647,27 +536,19 @@ with tab5:
             f["required"] = required_per_period
             f["gap"] = (f["required"] - f["forecast"]).clip(lower=0)
             f = f[f["gap"] > 0].copy()
-
             st.dataframe(f.head(120), use_container_width=True)
-
-            st.download_button(
-                "⬇️ Download Forecast Alerts CSV",
-                data=f.to_csv(index=False).encode("utf-8"),
-                file_name="forecast_gap_alerts.csv",
-                mime="text/csv",
-            )
         else:
             st.info("Forecast alerts require enough data.")
 
-# -------- TAB 6: DATA QUALITY --------
+# -------- TAB 6
 with tab6:
     st.markdown('<h3 class="h-sec">Data Quality</h3>', unsafe_allow_html=True)
     st.markdown('<p class="p-muted">Missing values, date coverage, and preview of cleaned data.</p>', unsafe_allow_html=True)
 
     n = len(df)
-    miss_date = int(df["Received Date"].isna().sum()) if "Received Date" in df.columns else n
-    miss_cat = int(df["Cargo Category"].isna().sum()) if "Cargo Category" in df.columns else n
-    miss_tr = int(df["No. of Trucks"].isna().sum()) if "No. of Trucks" in df.columns else n
+    miss_date = int(df["Received Date"].isna().sum())
+    miss_cat = int(df["Cargo Category"].isna().sum())
+    miss_tr = int(df["No. of Trucks"].isna().sum())
 
     q1, q2, q3, q4 = st.columns(4)
     q1.metric("Rows", f"{n:,}")
@@ -675,21 +556,10 @@ with tab6:
     q3.metric("Missing Category", f"{miss_cat:,}")
     q4.metric("Missing Trucks", f"{miss_tr:,}")
 
-    st.markdown('<h3 class="h-sec">Date Coverage</h3>', unsafe_allow_html=True)
-    st.write(f"From **{df['Received Date'].min().date()}** to **{df['Received Date'].max().date()}**")
-
     st.markdown('<h3 class="h-sec">Preview (Cleaned)</h3>', unsafe_allow_html=True)
     st.dataframe(df.head(400), use_container_width=True)
 
-    st.markdown('<h3 class="h-sec">Download Aggregated (Filtered)</h3>', unsafe_allow_html=True)
-    st.download_button(
-        "⬇️ Download Aggregated CSV",
-        data=agg_f.to_csv(index=False).encode("utf-8"),
-        file_name="aggregated_filtered.csv",
-        mime="text/csv",
-    )
-
-# -------- TAB 7: INSIGHTS --------
+# -------- TAB 7
 with tab7:
     st.markdown('<h3 class="h-sec">Auto Insights</h3>', unsafe_allow_html=True)
     st.markdown('<p class="p-muted">Quick narrative insights generated from your current selection.</p>', unsafe_allow_html=True)
@@ -705,58 +575,28 @@ with tab7:
         gap_ratio = float((series < required_per_period).mean() * 100) if required_per_period > 0 else 0.0
         trend = "Increasing" if (series.iloc[-1] > series.iloc[0]) else "Decreasing"
 
-        i1, i2 = st.columns([1.2, 0.8])
-
-        with i1:
-            st.markdown(
-                f"""
-<div class="kpi" style="background: rgba(255,255,255,0.88);">
+        st.markdown(
+            f"""
+<div class="kpi">
   <div class="t">Summary</div>
-  <div class="n" style="font-size:14px;">
+  <div class="n" style="font-size:14px; color:#0B1F3A;">
     • Average <b>{metric}</b> per {freq_label}: <b>{fmt_float(avg_flow)}</b><br>
     • Highest flow: <b>{fmt_int(max_val)}</b> on <b>{max_day.date()}</b><br>
     • Lowest flow: <b>{fmt_int(min_val)}</b> on <b>{min_day.date()}</b><br>
     • Gap periods (below required): <b>{fmt_float(gap_ratio)}%</b><br>
     • Trend: <b>{trend}</b><br>
-    • Momentum (last vs prev-4 avg): <b>{fmt_float(momentum)}</b>
+    • Momentum: <b>{fmt_float(momentum)}</b>
   </div>
 </div>
 """,
-                unsafe_allow_html=True,
-            )
+            unsafe_allow_html=True,
+        )
 
-        with i2:
-            if enough_data:
-                fcst = hw_forecast(series, forecast_periods, freq=freq)
-                risk_df = pd.DataFrame({"date": fcst.index, "forecast": fcst.values})
-                risk_df["required"] = required_per_period
-                risk_df["gap"] = (risk_df["required"] - risk_df["forecast"]).clip(lower=0)
-                risk_days = risk_df[risk_df["gap"] > 0].copy()
-
-                st.markdown(
-                    f"""
-<div class="kpi" style="background: rgba(255,255,255,0.88);">
-  <div class="t">Forecast Risk</div>
-  <div class="n" style="font-size:14px;">
-    Predicted shortage periods: <b>{len(risk_days)}</b><br>
-    First shortage date: <b>{risk_days.iloc[0]["date"].date() if len(risk_days)>0 else "None"}</b>
-  </div>
-</div>
-""",
-                    unsafe_allow_html=True,
-                )
-
-                st.markdown('<h3 class="h-sec">Risk Table (Top)</h3>', unsafe_allow_html=True)
-                st.dataframe(risk_days.head(30), use_container_width=True)
-            else:
-                st.info("Forecast risk insights require more data. Expand the date range or adjust filters.")
-
-# -------- TAB 8: GAZA MAP HEATMAP (Crossings) --------
+# -------- TAB 8
 with tab8:
     st.markdown('<h3 class="h-sec">Gaza Map Heatmap (Crossings)</h3>', unsafe_allow_html=True)
     st.markdown('<p class="p-muted">Heat intensity shows estimated aid inflow concentration by crossing.</p>', unsafe_allow_html=True)
 
-    # Coordinates are approximate. You can refine them later.
     crossing_coords = {
         "Erez": (31.559, 34.565),
         "Western Erez": (31.555, 34.560),
@@ -764,10 +604,9 @@ with tab8:
         "Rafah Crossing": (31.262, 34.247),
         "Gate 96": (31.250, 34.320),
         "Kissufim": (31.367, 34.403),
-        "JLOTS": (31.520, 34.430),  # approximate maritime point
+        "JLOTS": (31.520, 34.430),
     }
 
-    # Filter raw df by date + selections
     dmap = df.copy()
     dmap = dmap[(dmap["Received Date"] >= pd.to_datetime(start)) & (dmap["Received Date"] <= pd.to_datetime(end))]
 
@@ -778,16 +617,18 @@ with tab8:
 
     value_col = "No. of Trucks" if metric == "Trucks" else "Quantity"
 
-    cross_sum = (dmap.groupby("Crossing", as_index=False)[value_col]
-                   .sum()
-                   .rename(columns={value_col: "value"}))
+    cross_sum = (
+        dmap.groupby("Crossing", as_index=False)[value_col]
+        .sum()
+        .rename(columns={value_col: "value"})
+    )
 
     cross_sum["lat"] = cross_sum["Crossing"].map(lambda x: crossing_coords.get(x, (None, None))[0])
     cross_sum["lon"] = cross_sum["Crossing"].map(lambda x: crossing_coords.get(x, (None, None))[1])
     cross_sum = cross_sum.dropna(subset=["lat", "lon"])
 
     if cross_sum.empty:
-        st.info("No crossings with known coordinates for current filters. Add/update coordinates in crossing_coords.")
+        st.info("No crossings with known coordinates for current filters. Update crossing_coords.")
     else:
         fig = px.density_mapbox(
             cross_sum,
@@ -822,6 +663,5 @@ with tab8:
         fig.update_layout(height=620, margin=dict(l=10, r=10, t=60, b=10))
         st.plotly_chart(fig, use_container_width=True)
 
-        st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
-
+        st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
