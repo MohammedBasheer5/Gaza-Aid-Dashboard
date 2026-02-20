@@ -147,16 +147,6 @@ section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
 
 inject_global_theme(BG_IMAGE_PATH)
 
-st.markdown(
-    """
-<div class="hero">
-  <div class="title">📊 Gaza Aid Intelligence</div>
-  <div class="sub">Real-Time Monitoring & Predictive Analytics</div>
-  <div class="sub2">Humanitarian Flow • Supply Gaps • Forecasting</div>
-</div>
-""",
-    unsafe_allow_html=True,
-)
 import base64
 from pathlib import Path
 
@@ -953,5 +943,6 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
 
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
 
 
