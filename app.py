@@ -236,26 +236,27 @@ section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
    ✅ TABS — BEAUTIFUL & FULLY READABLE
    ============================================ */
 
-/* Outer tabs container */
+/* Outer tabs container — transparent, no background */
 [data-testid="stTabs"] {{
-  background: rgba(4, 14, 32, 0.82) !important;
-  border-radius: 20px !important;
-  padding: 8px !important;
-  border: 1px solid rgba(42, 163, 255, 0.30) !important;
-  backdrop-filter: blur(18px) !important;
-  -webkit-backdrop-filter: blur(18px) !important;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06) !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
 }}
 
-/* Tab list / nav bar */
+/* Tab list / nav bar — dark pill with blur */
 [data-testid="stTabs"] [role="tablist"] {{
   background: rgba(3, 10, 26, 0.88) !important;
   border-radius: 14px !important;
   padding: 5px 6px !important;
   gap: 4px !important;
-  border: 1px solid rgba(42, 163, 255, 0.18) !important;
+  border: 1px solid rgba(42, 163, 255, 0.25) !important;
   flex-wrap: wrap !important;
-  box-shadow: inset 0 2px 8px rgba(0,0,0,0.40) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.50), inset 0 2px 8px rgba(0,0,0,0.40) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  margin-bottom: 12px !important;
 }}
 
 /* Each tab button — default (not selected) */
@@ -302,15 +303,54 @@ button[data-baseweb="tab"][aria-selected="true"] {{
   background: transparent !important;
 }}
 
-/* Tab content panel */
+/* Tab content panel — fully transparent so background shows through */
 [data-testid="stTabs"] [role="tabpanel"] {{
-  background: rgba(5, 17, 40, 0.65) !important;
-  border-radius: 0 0 14px 14px !important;
-  padding: 18px 14px !important;
-  border: 1px solid rgba(42, 163, 255, 0.12) !important;
-  border-top: none !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 4px 0 !important;
+}}
+
+/* ============================================
+   ✅ st.metric — WHITE TEXT, FULLY VISIBLE
+   ============================================ */
+
+/* Metric label */
+[data-testid="stMetric"] label,
+[data-testid="stMetricLabel"],
+[data-testid="stMetricLabel"] p,
+[data-testid="stMetricLabel"] span {{
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  font-weight: 700 !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.60) !important;
+}}
+
+/* Metric value */
+[data-testid="stMetricValue"],
+[data-testid="stMetricValue"] div,
+[data-testid="stMetricValue"] p {{
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  font-weight: 900 !important;
+  font-size: 2rem !important;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.70) !important;
+}}
+
+/* Metric delta */
+[data-testid="stMetricDelta"] {{
+  color: #7DD3FF !important;
+  -webkit-text-fill-color: #7DD3FF !important;
+}}
+
+/* Metric container background card */
+[data-testid="stMetric"] {{
+  background: rgba(5, 17, 45, 0.72) !important;
+  border-radius: 14px !important;
+  padding: 14px 18px !important;
+  border: 1px solid rgba(42, 163, 255, 0.20) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35) !important;
 }}
 
 /* ====== Buttons ====== */
