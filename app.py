@@ -140,30 +140,67 @@ section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
 
 /* ====== Header ====== */
 .pro-title {{
-  text-align:center;
+  text-align: center;
   font-weight: 950;
-  letter-spacing: .2px;
-  color: #FFFFFF;
-  margin: 6px 0 2px 0;
-  text-shadow: 0 8px 22px rgba(0,0,0,0.25);
+  font-size: 3.8rem !important;
+  letter-spacing: -0.5px;
+  margin: 10px 0 8px 0;
+  background: linear-gradient(135deg, #FFFFFF 0%, #7DD3FF 35%, #FFB347 70%, #FF8C69 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 4px 18px rgba(255,179,71,0.40));
 }}
 .pro-sub {{
-  text-align:center;
-  color: #9bd6ff;
-  margin: 0 0 2px 0;
-  font-weight: 850;
+  text-align: center;
+  font-size: 1.60rem !important;
+  font-weight: 800;
+  margin: 0 0 6px 0;
+  background: linear-gradient(90deg, #B8E8FF 0%, #FFFFFF 50%, #B8E8FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 10px rgba(42,163,255,0.45));
 }}
 .pro-sub2 {{
-  text-align:center;
-  color: #59b8ff;
-  margin: 0 0 10px 0;
-  font-weight: 900;
+  text-align: center;
+  font-size: 1.20rem !important;
+  font-weight: 700;
+  margin: 0 0 14px 0;
+  color: rgba(255,255,255,0.82) !important;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.55);
 }}
 .pro-hr {{
   border: 0;
-  height:1px;
-  background: linear-gradient(90deg, transparent, rgba(160,210,255,0.7), transparent);
-  margin: 12px 0 14px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,179,71,0.65), rgba(42,163,255,0.85), rgba(255,107,107,0.55), transparent);
+  margin: 10px 0 18px;
+  border-radius: 2px;
+}}
+
+/* ====== Fix File Uploader text in sidebar ====== */
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {{
+  background: rgba(8, 22, 55, 0.88) !important;
+  border: 1.5px dashed rgba(42, 163, 255, 0.50) !important;
+  border-radius: 12px !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] div span {{
+  color: #A8D8FF !important;
+  -webkit-text-fill-color: #A8D8FF !important;
+  font-weight: 600 !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] div small {{
+  color: rgba(140, 200, 255, 0.80) !important;
+  -webkit-text-fill-color: rgba(140, 200, 255, 0.80) !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {{
+  background: rgba(42, 163, 255, 0.18) !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  border: 1px solid rgba(42, 163, 255, 0.45) !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
 }}
 
 /* ====== Badges ====== */
