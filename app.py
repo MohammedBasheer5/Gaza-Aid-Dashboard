@@ -29,6 +29,34 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+import base64
+from pathlib import Path
+
+def set_background(image_file):
+    img_path = Path(image_file)
+
+    if img_path.exists():
+        with open(img_path, "rb") as f:
+            encoded = base64.b64encode(f.read()).decode()
+
+        st.markdown(
+            f"""
+            <style>
+            .stApp {{
+                background: linear-gradient(rgba(7,27,51,0.65), rgba(7,27,51,0.65)),
+                            url("data:image/jpg;base64,{encoded}");
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }}
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+    else:
+        st.warning("Background image not found.")
+
+set_background("gaza_bg.jpg")
 
 # =========================
 # THEME / CSS (PRO + BACKGROUND + FIX TAGS)
@@ -795,4 +823,5 @@ with tab8:
         st.plotly_chart(fig, use_container_width=True)
 
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
+
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
