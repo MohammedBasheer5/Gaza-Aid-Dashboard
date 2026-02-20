@@ -128,8 +128,10 @@ section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {
   letter-spacing: -1px; margin: 0 0 10px 0;
   color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important;
   text-shadow:
-    0 0 60px rgba(255,200,80,0.55),
-    0 0 30px rgba(255,255,255,0.35),
+    0 0 80px rgba(42,163,255,1.0),
+    0 0 50px rgba(42,163,255,0.90),
+    0 0 120px rgba(42,163,255,0.60),
+    0 0 200px rgba(42,163,255,0.30),
     0 4px 28px rgba(0,0,0,0.95),
     0 2px 6px rgba(0,0,0,1.0);
 }
