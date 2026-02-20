@@ -169,11 +169,11 @@ section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
   font-size: 1.15rem !important;
   font-weight: 600;
   margin: 0 0 14px 0;
-  color: #FFE5B0 !important;
-  -webkit-text-fill-color: #FFE5B0 !important;
+  color: #C8E8FF !important;
+  -webkit-text-fill-color: #C8E8FF !important;
   letter-spacing: 2.5px;
   text-shadow:
-    0 0 20px rgba(255,200,80,0.60),
+    0 0 22px rgba(42,163,255,0.55),
     0 2px 12px rgba(0,0,0,0.80);
 }}
 .pro-hr {{
@@ -864,7 +864,13 @@ with tab6:
     q4.metric("Missing Trucks", f"{miss_tr:,}")
 
     st.markdown('<h3 class="h-sec">Date Coverage</h3>', unsafe_allow_html=True)
-    st.write(f"From **{df['Received Date'].min().date()}** to **{df['Received Date'].max().date()}**")
+    st.markdown(
+        f'<p style="color:#FFFFFF; font-size:16px; font-weight:600; '
+        f'text-shadow: 0 2px 8px rgba(0,0,0,0.70);">'
+        f'From <b>{df["Received Date"].min().date()}</b> to <b>{df["Received Date"].max().date()}</b>'
+        f'</p>',
+        unsafe_allow_html=True
+    )
 
     st.markdown('<h3 class="h-sec">Preview (Cleaned)</h3>', unsafe_allow_html=True)
     st.dataframe(df.head(400), use_container_width=True)
