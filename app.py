@@ -43,75 +43,198 @@ def inject_global_theme(bg_path: str):
 
     st.markdown(
         f"""
+<style>
+
 /* =========================
-   GLOBAL TYPOGRAPHY (تكبير احترافي وواضح جداً)
+   GLOBAL BACKGROUND
 ========================= */
+[data-testid="stAppViewContainer"] {{
+  background:
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+    url("data:image/jpg;base64,{bg64}");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}}
 
-/* تكبير أساسي */
-html, body {
-  font-size: 18px !important;
-}
+.stApp {{ background: transparent !important; }}
+[data-testid="stHeader"] {{ background: rgba(0,0,0,0) !important; }}
+.block-container {{ padding-top: 1.1rem; }}
 
-/* جميع النصوص */
-p, span, div, label, li {
-  font-size: 19px !important;
-  line-height: 1.8 !important;
-  font-weight: 600 !important;
-}
+/* =========================
+   GLOBAL TYPOGRAPHY (تكبير النص)
+========================= */
+html, body, [class*="css"] {{
+  font-size: 15px !important;          /* 👈 كبرنا الخط العام */
+}}
 
-/* العناوين */
-h1 {
-  font-size: 56px !important;
+p, li, span, div {{
+  font-size: 17px !important;
+  line-height: 1.7 !important;
+}}
+
+h1 {{
+  font-size: 46px !important;
   font-weight: 1000 !important;
-}
+}}
+h2 {{ font-size: 30px !important; font-weight: 900 !important; }}
+h3 {{ font-size: 24px !important; font-weight: 900 !important; }}
+h4 {{ font-size: 20px !important; font-weight: 900 !important; }}
 
-h2 {
-  font-size: 36px !important;
-  font-weight: 1000 !important;
-}
+h1, h2, h3, h4, h5, h6 {{
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 0 rgba(0,0,0,.55), 0 10px 24px rgba(0,0,0,.55);
+}}
 
-h3 {
-  font-size: 28px !important;
-  font-weight: 900 !important;
-}
+/* =========================
+   HERO TITLE (ألوان أجمل + وضوح أكثر)
+========================= */
+.hero {{
+  width: fit-content;
+  max-width: 95%;
+  margin: 0 auto 12px auto;
+  padding: 16px 22px;
+  border-radius: 18px;
+  background: rgba(0,0,0,0.38);
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+}}
+.hero .title {{
+  font-size: 48px;
+  font-weight: 1000;
+  margin: 0 0 6px 0;
+}}
+.hero .sub {{
+  font-size: 22px;
+  font-weight: 900;
+  margin: 0 0 6px 0;
+  color: #D7F0FF !important;
+}}
+.hero .sub2 {{
+  font-size: 18px;
+  font-weight: 900;
+  margin: 0;
+  color: #7DD3FF !important;
+}}
 
-h4 {
-  font-size: 24px !important;
-  font-weight: 900 !important;
-}
+/* =========================
+   SIDEBAR
+========================= */
+section[data-testid="stSidebar"] {{
+  background: linear-gradient(180deg, #06152b 0%, #061b38 100%);
+  border-right: 1px solid rgba(255,255,255,0.10);
+}}
+section[data-testid="stSidebar"] * {{
+  color: #EAF2FF !important;
+}}
 
-/* تكبير عناصر Streamlit الداخلية */
-[data-testid="stMarkdownContainer"] p {
-  font-size: 20px !important;
-}
-
-[data-testid="stMetricLabel"] {
+/* مدخلات السايدبار البيضاء: نص غامق وواضح */
+section[data-testid="stSidebar"] input,
+section[data-testid="stSidebar"] textarea,
+section[data-testid="stSidebar"] [data-baseweb="input"] input,
+section[data-testid="stSidebar"] [data-baseweb="select"] input,
+section[data-testid="stSidebar"] [role="combobox"],
+section[data-testid="stSidebar"] [role="spinbutton"] {{
+  color: #0B1F3A !important;
+  -webkit-text-fill-color: #0B1F3A !important;
+  font-weight: 800 !important;
   font-size: 16px !important;
+}}
+
+/* =========================
+   FILE UPLOADER (زر الرفع يكون واضح)
+========================= */
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] {{
+  background: rgba(255,255,255,0.92) !important;
+  border-radius: 14px !important;
+  padding: 10px !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+}}
+
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] * {{
+  color: #0B1F3A !important;
+  font-weight: 800 !important;
+}}
+
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] button {{
+  background: #2AA3FF !important;
+  color: white !important;
+  border-radius: 12px !important;
   font-weight: 900 !important;
-}
+  padding: 0.45rem 0.9rem !important;
+  border: none !important;
+}}
 
-[data-testid="stMetricValue"] {
-  font-size: 36px !important;
+/* =========================
+   MULTISELECT TAGS (الأحمر واضح والاسم واضح)
+========================= */
+section[data-testid="stSidebar"] [data-baseweb="tag"] {{
+  background: #ff3b3b !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+}}
+section[data-testid="stSidebar"] [data-baseweb="tag"] span {{
+  color: #ffffff !important;
   font-weight: 1000 !important;
-}
+  font-size: 14px !important;
+}}
+section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  opacity: 0.95 !important;
+}}
 
-/* تكبير selectbox / multiselect */
-[data-baseweb="select"] div {
-  font-size: 18px !important;
-  font-weight: 700 !important;
-}
+/* =========================
+   KPI CARDS (تكبير + وضوح)
+========================= */
+.kpi-grid {{
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}}
+@media(max-width:1200px){{ .kpi-grid{{ grid-template-columns: repeat(2, 1fr);}} }}
 
-/* تكبير Tabs */
-button[data-baseweb="tab"] {
-  font-size: 18px !important;
+.kpi {{
+  background: rgba(255,255,255,0.94);
+  border: 1px solid rgba(210, 225, 255, 0.75);
+  border-radius: 18px;
+  padding: 16px 16px;
+  box-shadow: 0 14px 35px rgba(0,0,0,0.25);
+}}
+.kpi .t {{
+  color: #52627a;
+  font-weight: 1000;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}}
+.kpi .v {{
+  color: #0B1F3A;
+  font-weight: 1000;
+  font-size: 30px;          /* 👈 كبرنا رقم KPI */
+  margin-top: 6px;
+}}
+.kpi .n {{
+  color: #52627a;
+  font-size: 13px;
+  margin-top: 6px;
+}}
+
+/* =========================
+   TABS / BUTTONS
+========================= */
+button[data-baseweb="tab"] {{
   font-weight: 1000 !important;
-}
+  font-size: 16px !important;
+}}
 
-/* تكبير أزرار */
-button {
-  font-size: 18px !important;
-  font-weight: 900 !important;
-}
+.stDownloadButton button, .stButton button {{
+  border-radius: 12px !important;
+  font-weight: 1000 !important;
+  font-size: 16px !important;
+}}
+
+</style>
 """,
         unsafe_allow_html=True,
     )
@@ -917,8 +1040,6 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
 
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
-
-
 
 
 
