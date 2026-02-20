@@ -70,7 +70,7 @@ html, body, [class*="css"] {{
 
 p, li, span, div {{
   font-size: 17px !important;
-  line-height: 1.7 !important;
+  line-height: 5.7 !important;
 }}
 
 h1 {{
@@ -1040,6 +1040,7 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
 
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
 
 
 
