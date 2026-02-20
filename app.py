@@ -140,7 +140,7 @@ section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {
   text-shadow: 0 2px 20px rgba(0,0,0,0.90), 0 1px 4px rgba(0,0,0,1.0);
 }
 .pro-sub2 {
-  text-align: center; font-size: 1.00rem !important; font-weight: 500;
+  text-align: center; font-size: 1.00rem !important; font-weight: 900;
   margin: 0 0 14px 0; color: rgba(255,210,120,0.95) !important;
   -webkit-text-fill-color: rgba(255,210,120,0.95) !important;
   letter-spacing: 3.5px; text-transform: uppercase;
