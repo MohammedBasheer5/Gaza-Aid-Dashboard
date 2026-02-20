@@ -45,103 +45,146 @@ def inject_global_theme(bg_path: str):
         f"""
 <style>
 /* ===== Force background on modern Streamlit containers ===== */
-[data-testid="stAppViewContainer"] {{
+[data-testid="stAppViewContainer"]{
   background:
-    linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.62)),
+    linear-gradient(rgba(0,0,0,0.70), rgba(0,0,0,0.70)),
     url("data:image/jpg;base64,{bg64}");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-}}
+}
 
-.stApp {{
-  background: transparent !important;
-}}
+/* Keep app transparent to show background */
+.stApp{ background: transparent !important; }
 
 /* Remove default header background to see image */
-[data-testid="stHeader"] {{
+[data-testid="stHeader"]{
   background: rgba(0,0,0,0) !important;
-}}
+}
 
 /* Container spacing */
-.block-container {{
+.block-container{
   padding-top: 1.2rem;
-}}
+}
 
 /* ====== Make ALL markdown headers readable (global) ====== */
-h1, h2, h3, h4, h5, h6 {{
+h1, h2, h3, h4, h5, h6{
   color: #FFFFFF !important;
-  text-shadow: 0 2px 0 rgba(0,0,0,.55), 0 10px 24px rgba(0,0,0,.55);
-}}
+  text-shadow: 0 2px 0 rgba(0,0,0,.60), 0 10px 24px rgba(0,0,0,.60);
+}
 
-/* ====== Header glass box ====== */
-.hero {{
+/* ====== Header glass box (make it clearer) ====== */
+.hero{
   width: fit-content;
   max-width: 95%;
   margin: 0 auto 14px auto;
-  padding: 16px 20px;
+  padding: 16px 22px;
   border-radius: 18px;
-  background: rgba(0,0,0,0.30);
-  border: 1px solid rgba(255,255,255,0.14);
-  backdrop-filter: blur(7px);
-}}
+  background: rgba(0,0,0,0.45);      /* كان 0.30 */
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(10px);       /* كان 7px */
+}
 
-.hero .title {{
+.hero .title{
   font-size: 54px;
   font-weight: 1000;
   margin: 0 0 6px 0;
-}}
+  color: #FFFFFF !important;
+}
 
-.hero .sub {{
+.hero .sub{
   font-size: 24px;
   font-weight: 900;
   margin: 0 0 6px 0;
-  color: #D7F0FF !important;
-}}
+  color: #EAF6FF !important;
+}
 
-.hero .sub2 {{
+.hero .sub2{
   font-size: 20px;
   font-weight: 900;
   margin: 0;
-  color: #7DD3FF !important;
-}}
+  color: #9BE0FF !important;
+}
 
 /* ===== Sidebar stays dark ===== */
-section[data-testid="stSidebar"] {{
+section[data-testid="stSidebar"]{
   background: linear-gradient(180deg, #06152b 0%, #061b38 100%);
   border-right: 1px solid rgba(255,255,255,0.08);
-}}
-section[data-testid="stSidebar"] * {{
+}
+section[data-testid="stSidebar"] *{
   color: #EAF2FF !important;
-}}
+}
 
-/* ===== Fix white widgets text inside sidebar ===== */
+/* ===== Make widget boxes WHITE + readable ===== */
+section[data-testid="stSidebar"] [data-baseweb="input"],
+section[data-testid="stSidebar"] [data-baseweb="select"],
+section[data-testid="stSidebar"] .stDateInput,
+section[data-testid="stSidebar"] .stNumberInput,
+section[data-testid="stSidebar"] .stFileUploader{
+  background: #FFFFFF !important;
+  border-radius: 12px !important;
+  padding: 8px 10px !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* ===== Fix text INSIDE white widgets (inputs/selects) ===== */
 section[data-testid="stSidebar"] input,
 section[data-testid="stSidebar"] textarea,
+section[data-testid="stSidebar"] select,
 section[data-testid="stSidebar"] [data-baseweb="input"] input,
 section[data-testid="stSidebar"] [data-baseweb="select"] input,
 section[data-testid="stSidebar"] [role="combobox"],
-section[data-testid="stSidebar"] [role="spinbutton"] {{
+section[data-testid="stSidebar"] [role="spinbutton"]{
   color: #0B1F3A !important;
   -webkit-text-fill-color: #0B1F3A !important;
-}}
+}
+
+/* Placeholder */
+section[data-testid="stSidebar"] input::placeholder,
+section[data-testid="stSidebar"] textarea::placeholder{
+  color: #6B7A90 !important;
+  -webkit-text-fill-color: #6B7A90 !important;
+}
+
+/* ===== ✅ FIX FILE UPLOADER TEXT + BUTTON (المشكلة عندك) ===== */
+/* Drag & drop text */
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] *{
+  color: #0B1F3A !important;
+}
+/* “Browse files” button */
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] button{
+  background: #0B3A78 !important;
+  color: #FFFFFF !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  font-weight: 900 !important;
+  padding: 8px 12px !important;
+}
+/* Hover */
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] button:hover{
+  filter: brightness(1.05);
+}
 
 /* ===== Multiselect tags: make text readable ===== */
-section[data-testid="stSidebar"] [data-baseweb="tag"] {{
+section[data-testid="stSidebar"] [data-baseweb="tag"]{
   background: #ff3b3b !important;
   border: 1px solid rgba(255,255,255,0.25) !important;
-}}
-section[data-testid="stSidebar"] [data-baseweb="tag"] span {{
+}
+section[data-testid="stSidebar"] [data-baseweb="tag"] span{
   color: #ffffff !important;
   font-weight: 900 !important;
-}}
-section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
+}
+section[data-testid="stSidebar"] [data-baseweb="tag"] svg{
   color: #ffffff !important;
   fill: #ffffff !important;
   opacity: 0.95 !important;
-}}
+}
+
+/* ===== Optional: make tab labels clearer on background ===== */
+button[data-baseweb="tab"]{
+  font-weight: 900 !important;
+}
 </style>
-""",
         unsafe_allow_html=True,
     )
 
@@ -943,6 +986,7 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
 
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
 
 
 
