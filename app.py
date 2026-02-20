@@ -31,6 +31,134 @@ st.set_page_config(
 )
 import base64
 from pathlib import Path
+import streamlit as st
+
+BG_IMAGE_PATH = "gaza_bg.jpg"  # نفس المجلد مع app.py
+
+def inject_global_theme(bg_path: str):
+    p = Path(bg_path)
+    bg64 = ""
+    if p.exists():
+        bg64 = base64.b64encode(p.read_bytes()).decode("utf-8")
+
+    st.markdown(
+        f"""
+<style>
+/* ===== Force background on modern Streamlit containers ===== */
+[data-testid="stAppViewContainer"] {{
+  background:
+    linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.62)),
+    url("data:image/jpg;base64,{bg64}");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}}
+
+.stApp {{
+  background: transparent !important;
+}}
+
+/* Remove default header background to see image */
+[data-testid="stHeader"] {{
+  background: rgba(0,0,0,0) !important;
+}}
+
+/* Container spacing */
+.block-container {{
+  padding-top: 1.2rem;
+}}
+
+/* ====== Make ALL markdown headers readable (global) ====== */
+h1, h2, h3, h4, h5, h6 {{
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 0 rgba(0,0,0,.55), 0 10px 24px rgba(0,0,0,.55);
+}}
+
+/* ====== Header glass box ====== */
+.hero {{
+  width: fit-content;
+  max-width: 95%;
+  margin: 0 auto 14px auto;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: rgba(0,0,0,0.30);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(7px);
+}}
+
+.hero .title {{
+  font-size: 54px;
+  font-weight: 1000;
+  margin: 0 0 6px 0;
+}}
+
+.hero .sub {{
+  font-size: 24px;
+  font-weight: 900;
+  margin: 0 0 6px 0;
+  color: #D7F0FF !important;
+}}
+
+.hero .sub2 {{
+  font-size: 20px;
+  font-weight: 900;
+  margin: 0;
+  color: #7DD3FF !important;
+}}
+
+/* ===== Sidebar stays dark ===== */
+section[data-testid="stSidebar"] {{
+  background: linear-gradient(180deg, #06152b 0%, #061b38 100%);
+  border-right: 1px solid rgba(255,255,255,0.08);
+}}
+section[data-testid="stSidebar"] * {{
+  color: #EAF2FF !important;
+}}
+
+/* ===== Fix white widgets text inside sidebar ===== */
+section[data-testid="stSidebar"] input,
+section[data-testid="stSidebar"] textarea,
+section[data-testid="stSidebar"] [data-baseweb="input"] input,
+section[data-testid="stSidebar"] [data-baseweb="select"] input,
+section[data-testid="stSidebar"] [role="combobox"],
+section[data-testid="stSidebar"] [role="spinbutton"] {{
+  color: #0B1F3A !important;
+  -webkit-text-fill-color: #0B1F3A !important;
+}}
+
+/* ===== Multiselect tags: make text readable ===== */
+section[data-testid="stSidebar"] [data-baseweb="tag"] {{
+  background: #ff3b3b !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+}}
+section[data-testid="stSidebar"] [data-baseweb="tag"] span {{
+  color: #ffffff !important;
+  font-weight: 900 !important;
+}}
+section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  opacity: 0.95 !important;
+}}
+</style>
+""",
+        unsafe_allow_html=True,
+    )
+
+inject_global_theme(BG_IMAGE_PATH)
+
+st.markdown(
+    """
+<div class="hero">
+  <div class="title">📊 Gaza Aid Intelligence</div>
+  <div class="sub">Real-Time Monitoring & Predictive Analytics</div>
+  <div class="sub2">Humanitarian Flow • Supply Gaps • Forecasting</div>
+</div>
+""",
+    unsafe_allow_html=True,
+)
+import base64
+from pathlib import Path
 
 def set_background(image_file):
     img_path = Path(image_file)
@@ -825,3 +953,4 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
 
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
