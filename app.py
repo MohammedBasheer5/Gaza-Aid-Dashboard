@@ -110,6 +110,40 @@ h1, h2, h3, h4, h5, h6 {{
   font-weight: 900;
   margin: 0;
   color: #7DD3FF !important;
+
+  /* =========================
+   BIG CENTER HERO (احترافي جداً)
+========================= */
+
+.hero-center{
+  width: 100%;
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding: 40px 20px;
+}
+
+.hero-title{
+  font-size: 72px !important;     /* 🔥 كبير جداً */
+  font-weight: 1000 !important;
+  color: #FFFFFF !important;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.7);
+  letter-spacing: 1px;
+}
+
+.hero-sub{
+  font-size: 34px !important;
+  font-weight: 900 !important;
+  color: #E6F6FF !important;
+  margin-top: 15px;
+}
+
+.hero-sub2{
+  font-size: 26px !important;
+  font-weight: 900 !important;
+  color: #7DD3FF !important;
+  margin-top: 10px;
+}
 }}
 
 /* =========================
@@ -559,10 +593,13 @@ def hw_forecast(series: pd.Series, periods: int, freq: str) -> pd.Series:
 # =========================
 # HEADER
 # =========================
-st.markdown('<h1 class="pro-title">📊 Gaza Aid Intelligence</h1>', unsafe_allow_html=True)
-st.markdown('<h3 class="pro-sub">Real-Time Monitoring & Predictive Analytics</h3>', unsafe_allow_html=True)
-st.markdown('<h4 class="pro-sub2">Humanitarian Flow • Supply Gaps • Forecasting</h4>', unsafe_allow_html=True)
-st.markdown('<hr class="pro-hr">', unsafe_allow_html=True)
+st.markdown("""
+<div class="hero-center">
+    <div class="hero-title">📊 Gaza Aid Intelligence</div>
+    <div class="hero-sub">Real-Time Monitoring & Predictive Analytics</div>
+    <div class="hero-sub2">Humanitarian Flow • Supply Gaps • Forecasting</div>
+</div>
+""", unsafe_allow_html=True)
 
 # =========================
 # SIDEBAR
@@ -1002,6 +1039,7 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)   
 
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
 
 
 
