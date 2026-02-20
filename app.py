@@ -190,28 +190,63 @@ section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
   box-shadow: 0 0 12px rgba(42,163,255,0.40);
 }}
 
-/* ====== Fix File Uploader text in sidebar ====== */
+/* ====== Fix File Uploader — full dark styling ====== */
+
+/* Remove the outer white container entirely */
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] {{
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}}
+
+/* Style the actual dropzone */
 section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {{
   background: rgba(8, 22, 55, 0.88) !important;
-  border: 1.5px dashed rgba(42, 163, 255, 0.50) !important;
+  border: 1.5px dashed rgba(42, 163, 255, 0.55) !important;
   border-radius: 12px !important;
+  box-shadow: none !important;
 }}
-section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] div span {{
+
+/* All text inside dropzone */
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] * {{
   color: #A8D8FF !important;
   -webkit-text-fill-color: #A8D8FF !important;
-  font-weight: 600 !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] div span {{
+  color: #C8EAFF !important;
+  -webkit-text-fill-color: #C8EAFF !important;
+  font-weight: 700 !important;
 }}
 section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"] div small {{
   color: rgba(140, 200, 255, 0.80) !important;
   -webkit-text-fill-color: rgba(140, 200, 255, 0.80) !important;
 }}
+
+/* Browse files button */
 section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {{
   background: rgba(42, 163, 255, 0.18) !important;
   color: #FFFFFF !important;
   -webkit-text-fill-color: #FFFFFF !important;
-  border: 1px solid rgba(42, 163, 255, 0.45) !important;
+  border: 1px solid rgba(42, 163, 255, 0.50) !important;
   border-radius: 8px !important;
   font-weight: 700 !important;
+}}
+
+/* Also fix the label "Upload Excel (.xlsx)" above the box */
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] label {{
+  color: #EAF2FF !important;
+  -webkit-text-fill-color: #EAF2FF !important;
+}}
+
+/* Fix white background on the [data-baseweb] container wrapping uploader */
+section[data-testid="stSidebar"] [data-baseweb="input"],
+section[data-testid="stSidebar"] [data-baseweb="select"],
+section[data-testid="stSidebar"] .stFileUploader {{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
 }}
 
 /* ====== Badges ====== */
