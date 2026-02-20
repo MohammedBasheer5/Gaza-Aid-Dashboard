@@ -145,38 +145,49 @@ section[data-testid="stSidebar"] [data-baseweb="tag"] svg {{
   font-size: 3.8rem !important;
   letter-spacing: -0.5px;
   margin: 10px 0 8px 0;
-  background: linear-gradient(135deg, #FFFFFF 0%, #7DD3FF 35%, #FFB347 70%, #FF8C69 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 4px 18px rgba(255,179,71,0.40));
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  text-shadow:
+    0 0 40px rgba(42,163,255,0.90),
+    0 0 80px rgba(42,163,255,0.50),
+    0 4px 20px rgba(0,0,0,0.80),
+    2px 2px 0px rgba(0,80,160,0.60);
 }}
 .pro-sub {{
   text-align: center;
   font-size: 1.60rem !important;
-  font-weight: 800;
+  font-weight: 700;
   margin: 0 0 6px 0;
-  background: linear-gradient(90deg, #B8E8FF 0%, #FFFFFF 50%, #B8E8FF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 2px 10px rgba(42,163,255,0.45));
+  color: #E0F4FF !important;
+  -webkit-text-fill-color: #E0F4FF !important;
+  text-shadow:
+    0 0 30px rgba(42,163,255,0.70),
+    0 3px 14px rgba(0,0,0,0.75);
 }}
 .pro-sub2 {{
   text-align: center;
-  font-size: 1.20rem !important;
-  font-weight: 700;
+  font-size: 1.15rem !important;
+  font-weight: 600;
   margin: 0 0 14px 0;
-  color: rgba(255,255,255,0.82) !important;
-  letter-spacing: 2px;
-  text-shadow: 0 2px 14px rgba(0,0,0,0.55);
+  color: #FFE5B0 !important;
+  -webkit-text-fill-color: #FFE5B0 !important;
+  letter-spacing: 2.5px;
+  text-shadow:
+    0 0 20px rgba(255,200,80,0.60),
+    0 2px 12px rgba(0,0,0,0.80);
 }}
 .pro-hr {{
   border: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255,179,71,0.65), rgba(42,163,255,0.85), rgba(255,107,107,0.55), transparent);
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(42,163,255,0.90),
+    rgba(255,220,100,0.80),
+    rgba(42,163,255,0.90),
+    transparent);
   margin: 10px 0 18px;
   border-radius: 2px;
+  box-shadow: 0 0 12px rgba(42,163,255,0.40);
 }}
 
 /* ====== Fix File Uploader text in sidebar ====== */
