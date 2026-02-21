@@ -5,9 +5,11 @@ import plotly.express as px
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 import base64
 from pathlib import Path
+import anthropic
+import json
 
 DEFAULT_FILE_PATH = "commodities-received-13.xlsx"
-BG_IMAGE_PATH = "Gaza_BG.jpg"
+BG_IMAGE_PATH = "gaza_bg.jpg"
 
 st.set_page_config(
     page_title="Gaza Aid Intelligence",
@@ -437,9 +439,9 @@ st.markdown(kpi_html, unsafe_allow_html=True)
 # =========================
 # TABS
 # =========================
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
     "🏠 Overview","📈 Trends","🧩 Composition","🔮 Forecast",
-    "🚨 Alerts","✅ Data Quality","🧠 Insights","🗺️ Gaza Map Heatmap"
+    "🚨 Alerts","✅ Data Quality","🧠 Insights","🗺️ Gaza Map Heatmap","💬 AI Chat"
 ])
 
 with tab1:
@@ -627,3 +629,138 @@ with tab8:
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
 
+
+with tab9:
+    st.markdown('<h3 class="h-sec">💬 AI Data Assistant</h3>', unsafe_allow_html=True)
+    st.markdown('<p class="p-muted">Ask any question about the loaded dataset — trucks, crossings, dates, categories, gaps and more.</p>', unsafe_allow_html=True)
+
+    # API Key input
+    api_key = st.text_input(
+        "🔑 Anthropic API Key",
+        type="password",
+        placeholder="sk-ant-...",
+        help="Get your key from console.anthropic.com"
+    )
+
+    st.markdown("---")
+
+    # Example questions
+    st.markdown('<p style="color:rgba(255,255,255,0.70);font-size:13px;margin-bottom:6px;">💡 Example questions:</p>', unsafe_allow_html=True)
+    example_cols = st.columns(3)
+    examples = [
+        "كم شاحنة وصلت في 2024-03-15؟",
+        "ما هو المعبر الأكثر نشاطاً؟",
+        "أي فئة بضائع وصل منها أكثر؟",
+        "ما أكبر يوم من حيث عدد الشاحنات؟",
+        "كم يوماً كانت الشاحنات صفر؟",
+        "ما متوسط الشاحنات اليومي؟",
+    ]
+    for i, ex in enumerate(examples):
+        with example_cols[i % 3]:
+            if st.button(ex, key=f"ex_{i}", use_container_width=True):
+                st.session_state["chat_input_prefill"] = ex
+
+    st.markdown("")
+
+    # Initialize chat history
+    if "chat_history" not in st.session_state:
+        st.session_state["chat_history"] = []
+
+    # Chat display
+    chat_container = st.container()
+    with chat_container:
+        for msg in st.session_state["chat_history"]:
+            if msg["role"] == "user":
+                st.markdown(
+                    f'<div style="background:rgba(42,163,255,0.15);border:1px solid rgba(42,163,255,0.30);' +
+                    f'border-radius:12px;padding:12px 16px;margin:6px 0;text-align:right;">' +
+                    f'<span style="color:#FFFFFF;font-size:14px;">🧑 {msg["content"]}</span></div>',
+                    unsafe_allow_html=True
+                )
+            else:
+                st.markdown(
+                    f'<div style="background:rgba(5,17,45,0.72);border:1px solid rgba(42,163,255,0.20);' +
+                    f'border-radius:12px;padding:12px 16px;margin:6px 0;">' +
+                    f'<span style="color:#E0F4FF;font-size:14px;">🤖 {msg["content"]}</span></div>',
+                    unsafe_allow_html=True
+                )
+
+    # Input area
+    prefill = st.session_state.pop("chat_input_prefill", "")
+    user_input = st.chat_input("اسأل عن البيانات... / Ask about the data...")
+
+    if user_input and api_key:
+        # Build data context from current filtered dataframe
+        def build_data_context(df, agg_f, series, metric_col):
+            ctx = {}
+            ctx["total_rows"] = len(df)
+            ctx["date_range"] = f"{df['Received Date'].min().date()} to {df['Received Date'].max().date()}"
+            ctx["categories"] = df["Cargo Category"].value_counts().to_dict()
+            ctx["crossings"] = df["Crossing"].value_counts().to_dict() if "Crossing" in df.columns else {}
+            ctx["total_trucks"] = int(df["No. of Trucks"].sum())
+            ctx["avg_daily_trucks"] = round(float(df.groupby("Received Date")["No. of Trucks"].sum().mean()), 1)
+            ctx["max_day"] = str(df.groupby("Received Date")["No. of Trucks"].sum().idxmax().date())
+            ctx["max_day_trucks"] = int(df.groupby("Received Date")["No. of Trucks"].sum().max())
+            ctx["zero_days"] = int((df.groupby("Received Date")["No. of Trucks"].sum() == 0).sum())
+            # Top 5 days
+            top5 = df.groupby("Received Date")["No. of Trucks"].sum().nlargest(5)
+            ctx["top5_days"] = {str(k.date()): int(v) for k, v in top5.items()}
+            # Per crossing total
+            if "Crossing" in df.columns:
+                ctx["trucks_per_crossing"] = df.groupby("Crossing")["No. of Trucks"].sum().to_dict()
+            # Per category total
+            ctx["trucks_per_category"] = df.groupby("Cargo Category")["No. of Trucks"].sum().to_dict()
+            return ctx
+
+        ctx = build_data_context(df, agg_f, series, metric_col)
+
+        system_prompt = f"""You are an expert humanitarian data analyst assistant for the Gaza Aid Intelligence dashboard.
+You have full access to the currently loaded dataset. Answer questions precisely using the data below.
+Be concise, factual, and helpful. Support both Arabic and English questions.
+Always cite specific numbers from the data. If asked about a specific date, look it up in the dataset.
+
+=== CURRENT DATASET SUMMARY ===
+{json.dumps(ctx, ensure_ascii=False, indent=2)}
+
+=== FULL DATE-LEVEL DATA (trucks per day) ===
+{df.groupby(df["Received Date"].dt.date)["No. of Trucks"].sum().to_string()}
+
+=== TRUCKS BY DATE AND CROSSING ===
+{df.groupby([df["Received Date"].dt.date, "Crossing"])["No. of Trucks"].sum().to_string() if "Crossing" in df.columns else "N/A"}
+
+=== TRUCKS BY DATE AND CATEGORY ===
+{df.groupby([df["Received Date"].dt.date, "Cargo Category"])["No. of Trucks"].sum().to_string()}
+"""
+
+        # Add to history
+        st.session_state["chat_history"].append({"role": "user", "content": user_input})
+
+        # Build messages for API
+        messages = [{"role": m["role"], "content": m["content"]} for m in st.session_state["chat_history"]]
+
+        try:
+            client = anthropic.Anthropic(api_key=api_key)
+            with st.spinner("Thinking..."):
+                response = client.messages.create(
+                    model="claude-haiku-4-5-20251001",
+                    max_tokens=1024,
+                    system=system_prompt,
+                    messages=messages,
+                )
+            answer = response.content[0].text
+            st.session_state["chat_history"].append({"role": "assistant", "content": answer})
+            st.rerun()
+
+        except anthropic.AuthenticationError:
+            st.error("❌ Invalid API key. Please check your Anthropic API key.")
+        except Exception as e:
+            st.error(f"❌ Error: {str(e)}")
+
+    elif user_input and not api_key:
+        st.warning("⚠️ Please enter your Anthropic API key above to use the chat.")
+
+    # Clear chat button
+    if st.session_state.get("chat_history"):
+        if st.button("🗑️ Clear Chat", use_container_width=False):
+            st.session_state["chat_history"] = []
+            st.rerun()
