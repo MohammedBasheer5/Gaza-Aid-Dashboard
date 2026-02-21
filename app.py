@@ -7,7 +7,7 @@ import base64
 from pathlib import Path
 
 DEFAULT_FILE_PATH = "commodities-received-13.xlsx"
-BG_IMAGE_PATH = "gaza_bg.jpg"
+BG_IMAGE_PATH = "Gaza_BG.jpg"
 
 st.set_page_config(
     page_title="Gaza Aid Intelligence",
@@ -442,17 +442,15 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
 
 with tab1:
     st.markdown('<h3 class="h-sec">Executive Overview</h3>', unsafe_allow_html=True)
-    st.markdown('<p class="p-muted">All data — unaffected by category or crossing filters.</p>', unsafe_allow_html=True)
-    # Overview always shows ALL data (date range only, no category/crossing filter)
-    agg_overview = agg[(agg["ds"] >= start) & (agg["ds"] <= end)].copy()
+    st.markdown('<p class="p-muted">Top categories and crossings based on your current filters.</p>', unsafe_allow_html=True)
     c1, c2 = st.columns(2)
     with c1:
-        cat_sum = agg_overview.groupby("Cargo Category", as_index=False)[metric_col].sum().sort_values(metric_col, ascending=False)
+        cat_sum = agg_f.groupby("Cargo Category", as_index=False)[metric_col].sum().sort_values(metric_col, ascending=False)
         fig = px.bar(cat_sum.head(12), x=metric_col, y="Cargo Category", orientation="h", title=f"Top Categories by Total {metric}")
         fig.update_layout(height=420, margin=dict(l=20,r=20,t=50,b=20))
         st.plotly_chart(fig, use_container_width=True)
     with c2:
-        cross_sum = agg_overview.groupby("Crossing", as_index=False)[metric_col].sum().sort_values(metric_col, ascending=False)
+        cross_sum = agg_f.groupby("Crossing", as_index=False)[metric_col].sum().sort_values(metric_col, ascending=False)
         fig = px.bar(cross_sum, x=metric_col, y="Crossing", orientation="h", title=f"Crossings by Total {metric}")
         fig.update_layout(height=420, margin=dict(l=20,r=20,t=50,b=20))
         st.plotly_chart(fig, use_container_width=True)
@@ -626,3 +624,6 @@ with tab8:
         st.plotly_chart(fig, use_container_width=True)
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
+
+
