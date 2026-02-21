@@ -7,7 +7,7 @@ import base64
 from pathlib import Path
 
 DEFAULT_FILE_PATH = "commodities-received-13.xlsx"
-BG_IMAGE_PATH = "gaza_bg.jpg"
+BG_IMAGE_PATH = "Gaza_BG.jpg"
 
 st.set_page_config(
     page_title="Gaza Aid Intelligence",
@@ -624,3 +624,4 @@ with tab8:
         st.plotly_chart(fig, use_container_width=True)
         st.markdown('<h3 class="h-sec">Crossings Table</h3>', unsafe_allow_html=True)
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
+
