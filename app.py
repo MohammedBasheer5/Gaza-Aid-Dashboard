@@ -5,7 +5,7 @@ import plotly.express as px
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 import base64
 from pathlib import Path
-import anthropic
+import requests
 import json
 
 DEFAULT_FILE_PATH = "commodities-received-13.xlsx"
@@ -739,20 +739,32 @@ Always cite specific numbers from the data. If asked about a specific date, look
         messages = [{"role": m["role"], "content": m["content"]} for m in st.session_state["chat_history"]]
 
         try:
-            client = anthropic.Anthropic(api_key=api_key)
             with st.spinner("Thinking..."):
-                response = client.messages.create(
-                    model="claude-haiku-4-5-20251001",
-                    max_tokens=1024,
-                    system=system_prompt,
-                    messages=messages,
+                resp = requests.post(
+                    "https://api.anthropic.com/v1/messages",
+                    headers={
+                        "x-api-key": api_key,
+                        "anthropic-version": "2023-06-01",
+                        "content-type": "application/json",
+                    },
+                    json={
+                        "model": "claude-haiku-4-5-20251001",
+                        "max_tokens": 1024,
+                        "system": system_prompt,
+                        "messages": messages,
+                    },
+                    timeout=60,
                 )
-            answer = response.content[0].text
-            st.session_state["chat_history"].append({"role": "assistant", "content": answer})
-            st.rerun()
+            data = resp.json()
+            if resp.status_code == 401:
+                st.error("❌ Invalid API key. Please check your Anthropic API key.")
+            elif resp.status_code != 200:
+                st.error(f"❌ API Error {resp.status_code}: {data.get('error', {}).get('message', str(data))}")
+            else:
+                answer = data["content"][0]["text"]
+                st.session_state["chat_history"].append({"role": "assistant", "content": answer})
+                st.rerun()
 
-        except anthropic.AuthenticationError:
-            st.error("❌ Invalid API key. Please check your Anthropic API key.")
         except Exception as e:
             st.error(f"❌ Error: {str(e)}")
 
