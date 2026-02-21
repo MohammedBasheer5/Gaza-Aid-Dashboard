@@ -5,11 +5,9 @@ import plotly.express as px
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 import base64
 from pathlib import Path
-import requests
-import json
 
 DEFAULT_FILE_PATH = "commodities-received-13.xlsx"
-BG_IMAGE_PATH = "gaza_bg.jpg"
+BG_IMAGE_PATH = "Gaza_BG.jpg"
 
 st.set_page_config(
     page_title="Gaza Aid Intelligence",
@@ -249,86 +247,6 @@ button[data-baseweb="tab"][aria-selected="true"] {
   box-shadow: 0 6px 20px rgba(0,0,0,0.35) !important;
 }
 .stDownloadButton button, .stButton button { border-radius: 12px !important; font-weight: 900 !important; }
-
-/* ====== CHAT TAB ====== */
-/* Force transparent background on all chat tab containers */
-[data-testid="stChatInput"] {
-  background: rgba(3,10,26,0.85) !important;
-  border: 1px solid rgba(42,163,255,0.35) !important;
-  border-radius: 14px !important;
-  backdrop-filter: blur(12px) !important;
-}
-[data-testid="stChatInput"] textarea {
-  background: transparent !important;
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-}
-[data-testid="stChatInput"] textarea::placeholder {
-  color: rgba(160,210,255,0.60) !important;
-  -webkit-text-fill-color: rgba(160,210,255,0.60) !important;
-}
-[data-testid="stChatInput"] button {
-  background: rgba(42,163,255,0.25) !important;
-  border-radius: 10px !important;
-}
-/* Text input (API key) inside tab */
-[data-testid="stTextInput"] {
-  background: transparent !important;
-}
-[data-testid="stTextInput"] > div {
-  background: rgba(3,10,26,0.85) !important;
-  border: 1px solid rgba(42,163,255,0.30) !important;
-  border-radius: 12px !important;
-  backdrop-filter: blur(12px) !important;
-}
-[data-testid="stTextInput"] input {
-  background: transparent !important;
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-}
-[data-testid="stTextInput"] input::placeholder {
-  color: rgba(160,210,255,0.50) !important;
-  -webkit-text-fill-color: rgba(160,210,255,0.50) !important;
-}
-[data-testid="stTextInput"] label,
-[data-testid="stTextInput"] label p {
-  color: #EAF2FF !important;
-  -webkit-text-fill-color: #EAF2FF !important;
-  font-weight: 700 !important;
-}
-/* Example question buttons */
-[data-testid="stTabs"] [role="tabpanel"] .stButton button {
-  background: rgba(3,10,26,0.80) !important;
-  color: rgba(160,210,255,0.90) !important;
-  -webkit-text-fill-color: rgba(160,210,255,0.90) !important;
-  border: 1px solid rgba(42,163,255,0.25) !important;
-  border-radius: 10px !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  backdrop-filter: blur(8px) !important;
-  transition: all 0.20s ease !important;
-}
-[data-testid="stTabs"] [role="tabpanel"] .stButton button:hover {
-  background: rgba(42,163,255,0.20) !important;
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-  border-color: rgba(42,163,255,0.55) !important;
-}
-/* Warning / info boxes transparent */
-[data-testid="stTabs"] [role="tabpanel"] [data-testid="stAlert"] {
-  background: rgba(3,10,26,0.75) !important;
-  border-radius: 12px !important;
-  border: 1px solid rgba(42,163,255,0.25) !important;
-  backdrop-filter: blur(10px) !important;
-}
-[data-testid="stTabs"] [role="tabpanel"] [data-testid="stAlert"] p {
-  color: #EAF2FF !important;
-  -webkit-text-fill-color: #EAF2FF !important;
-}
-/* hr divider transparent */
-[data-testid="stTabs"] [role="tabpanel"] hr {
-  border-color: rgba(42,163,255,0.20) !important;
-}
 </style>
 """
 
@@ -519,9 +437,9 @@ st.markdown(kpi_html, unsafe_allow_html=True)
 # =========================
 # TABS
 # =========================
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "🏠 Overview","📈 Trends","🧩 Composition","🔮 Forecast",
-    "🚨 Alerts","✅ Data Quality","🧠 Insights","🗺️ Gaza Map Heatmap","💬 AI Chat"
+    "🚨 Alerts","✅ Data Quality","🧠 Insights","🗺️ Gaza Map Heatmap"
 ])
 
 with tab1:
@@ -710,132 +628,3 @@ with tab8:
         st.dataframe(cross_sum.sort_values("value", ascending=False), use_container_width=True)
 
 
-with tab9:
-    st.markdown('<h3 class="h-sec">AI Data Assistant</h3>', unsafe_allow_html=True)
-    st.markdown('<p class="p-muted">Ask any question about the loaded dataset in Arabic or English.</p>', unsafe_allow_html=True)
-
-    api_key = st.text_input("Anthropic API Key", type="password", placeholder="sk-ant-api03-...", help="Get from console.anthropic.com")
-
-    st.markdown("---")
-
-    st.markdown('<p style="color:rgba(255,255,255,0.70);font-size:13px;">Example questions:</p>', unsafe_allow_html=True)
-    ex_cols = st.columns(3)
-    examples = [
-        "How many trucks arrived on 2024-03-15?",
-        "Which crossing is most active?",
-        "Which category has most trucks?",
-        "What is the peak delivery day?",
-        "How many days had zero trucks?",
-        "What is the daily average?",
-    ]
-    for i, ex in enumerate(examples):
-        with ex_cols[i % 3]:
-            if st.button(ex, key="ex_" + str(i), use_container_width=True):
-                st.session_state["chat_prefill"] = ex
-
-    st.markdown("")
-
-    if "chat_history" not in st.session_state:
-        st.session_state["chat_history"] = []
-
-    # Display chat messages
-    for msg in st.session_state["chat_history"]:
-        if msg["role"] == "user":
-            st.markdown(
-                '<div style="background:rgba(42,163,255,0.15);border:1px solid rgba(42,163,255,0.35);'
-                'border-radius:14px;padding:12px 18px;margin:8px 0;">'
-                '<b style="color:#7DD3FF;font-size:12px;">YOU</b><br>'
-                '<span style="color:#FFFFFF;font-size:15px;">' + msg["content"] + '</span></div>',
-                unsafe_allow_html=True
-            )
-        else:
-            safe = msg["content"].replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>")
-            st.markdown(
-                '<div style="background:rgba(5,17,45,0.80);border:1px solid rgba(42,163,255,0.20);'
-                'border-radius:14px;padding:12px 18px;margin:8px 0;">'
-                '<b style="color:#2AA3FF;font-size:12px;">AI ASSISTANT</b><br>'
-                '<span style="color:#E0F4FF;font-size:15px;">' + safe + '</span></div>',
-                unsafe_allow_html=True
-            )
-
-    user_input = st.chat_input("Ask about the data... (Arabic or English)")
-
-    if user_input and api_key:
-        # Build data context - ASCII safe
-        daily = df.groupby(df["Received Date"].dt.date)["No. of Trucks"].sum()
-        cross_totals = {}
-        if "Crossing" in df.columns:
-            cross_totals = {str(k): int(v) for k, v in df.groupby("Crossing")["No. of Trucks"].sum().items()}
-        cat_totals = {str(k): int(v) for k, v in df.groupby("Cargo Category")["No. of Trucks"].sum().items()}
-        top5 = {str(k): int(v) for k, v in daily.nlargest(5).items()}
-
-        daily_lines = [str(d) + ": " + str(int(v)) + " trucks" for d, v in daily.items()]
-        daily_str = " | ".join(daily_lines)
-
-        cross_date_lines = []
-        if "Crossing" in df.columns:
-            for (d, c), v in df.groupby([df["Received Date"].dt.date, "Crossing"])["No. of Trucks"].sum().items():
-                cross_date_lines.append(str(d) + " " + str(c) + ": " + str(int(v)))
-        cross_date_str = " | ".join(cross_date_lines) if cross_date_lines else "N/A"
-
-        system_prompt = (
-            "You are an expert humanitarian data analyst for the Gaza Aid Intelligence dashboard. "
-            "Answer questions about the dataset precisely. "
-            "Reply in the SAME language the user asked in (Arabic if asked in Arabic, English if in English). "
-            "Always cite specific numbers from the data. "
-            "Total rows: " + str(len(df)) + ". "
-            "Date range: " + str(df["Received Date"].min().date()) + " to " + str(df["Received Date"].max().date()) + ". "
-            "Total trucks: " + str(int(df["No. of Trucks"].sum())) + ". "
-            "Daily average: " + str(round(float(daily.mean()), 1)) + ". "
-            "Peak day: " + str(daily.idxmax()) + " with " + str(int(daily.max())) + " trucks. "
-            "Zero days: " + str(int((daily == 0).sum())) + ". "
-            "Crossings: " + json.dumps(cross_totals) + ". "
-            "Categories: " + json.dumps(cat_totals) + ". "
-            "Top 5 days: " + json.dumps(top5) + ". "
-            "All daily data: " + daily_str + ". "
-            "Crossing by date: " + cross_date_str
-        )
-
-        st.session_state["chat_history"].append({"role": "user", "content": user_input})
-        messages = [{"role": m["role"], "content": m["content"]} for m in st.session_state["chat_history"]]
-
-        try:
-            with st.spinner("Thinking..."):
-                payload_bytes = json.dumps(
-                    {"model": "claude-haiku-4-5-20251001", "max_tokens": 1024,
-                     "system": system_prompt, "messages": messages},
-                    ensure_ascii=False
-                ).encode("utf-8")
-
-                resp = requests.post(
-                    "https://api.anthropic.com/v1/messages",
-                    headers={
-                        "x-api-key": api_key,
-                        "anthropic-version": "2023-06-01",
-                        "content-type": "application/json; charset=utf-8",
-                    },
-                    data=payload_bytes,
-                    timeout=60,
-                )
-            result = resp.json()
-            if resp.status_code == 401:
-                st.error("Invalid API key.")
-                st.session_state["chat_history"].pop()
-            elif resp.status_code != 200:
-                st.error("API Error " + str(resp.status_code) + ": " + result.get("error", {}).get("message", str(result)))
-                st.session_state["chat_history"].pop()
-            else:
-                answer = result["content"][0]["text"]
-                st.session_state["chat_history"].append({"role": "assistant", "content": answer})
-                st.rerun()
-        except Exception as e:
-            st.error("Error: " + str(e))
-            st.session_state["chat_history"].pop()
-
-    elif user_input and not api_key:
-        st.warning("Please enter your Anthropic API key above.")
-
-    if st.session_state.get("chat_history"):
-        if st.button("Clear Chat"):
-            st.session_state["chat_history"] = []
-            st.rerun()
