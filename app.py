@@ -249,6 +249,86 @@ button[data-baseweb="tab"][aria-selected="true"] {
   box-shadow: 0 6px 20px rgba(0,0,0,0.35) !important;
 }
 .stDownloadButton button, .stButton button { border-radius: 12px !important; font-weight: 900 !important; }
+
+/* ====== CHAT TAB ====== */
+/* Force transparent background on all chat tab containers */
+[data-testid="stChatInput"] {
+  background: rgba(3,10,26,0.85) !important;
+  border: 1px solid rgba(42,163,255,0.35) !important;
+  border-radius: 14px !important;
+  backdrop-filter: blur(12px) !important;
+}
+[data-testid="stChatInput"] textarea {
+  background: transparent !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+[data-testid="stChatInput"] textarea::placeholder {
+  color: rgba(160,210,255,0.60) !important;
+  -webkit-text-fill-color: rgba(160,210,255,0.60) !important;
+}
+[data-testid="stChatInput"] button {
+  background: rgba(42,163,255,0.25) !important;
+  border-radius: 10px !important;
+}
+/* Text input (API key) inside tab */
+[data-testid="stTextInput"] {
+  background: transparent !important;
+}
+[data-testid="stTextInput"] > div {
+  background: rgba(3,10,26,0.85) !important;
+  border: 1px solid rgba(42,163,255,0.30) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(12px) !important;
+}
+[data-testid="stTextInput"] input {
+  background: transparent !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+[data-testid="stTextInput"] input::placeholder {
+  color: rgba(160,210,255,0.50) !important;
+  -webkit-text-fill-color: rgba(160,210,255,0.50) !important;
+}
+[data-testid="stTextInput"] label,
+[data-testid="stTextInput"] label p {
+  color: #EAF2FF !important;
+  -webkit-text-fill-color: #EAF2FF !important;
+  font-weight: 700 !important;
+}
+/* Example question buttons */
+[data-testid="stTabs"] [role="tabpanel"] .stButton button {
+  background: rgba(3,10,26,0.80) !important;
+  color: rgba(160,210,255,0.90) !important;
+  -webkit-text-fill-color: rgba(160,210,255,0.90) !important;
+  border: 1px solid rgba(42,163,255,0.25) !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.20s ease !important;
+}
+[data-testid="stTabs"] [role="tabpanel"] .stButton button:hover {
+  background: rgba(42,163,255,0.20) !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  border-color: rgba(42,163,255,0.55) !important;
+}
+/* Warning / info boxes transparent */
+[data-testid="stTabs"] [role="tabpanel"] [data-testid="stAlert"] {
+  background: rgba(3,10,26,0.75) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(42,163,255,0.25) !important;
+  backdrop-filter: blur(10px) !important;
+}
+[data-testid="stTabs"] [role="tabpanel"] [data-testid="stAlert"] p {
+  color: #EAF2FF !important;
+  -webkit-text-fill-color: #EAF2FF !important;
+}
+/* hr divider transparent */
+[data-testid="stTabs"] [role="tabpanel"] hr {
+  border-color: rgba(42,163,255,0.20) !important;
+}
 </style>
 """
 
